@@ -33,5 +33,11 @@ export const Particle = function (this: any) {
 
     ctx.fillStyle = `rgba(${this.rgbArray[0]},${this.rgbArray[1]},${this.rgbArray[2]},${currOpacity})`
     ctx.fillRect(currX - currSize / 2, currY - currSize / 2, currSize, currSize)
+
+    // 绘制圆形
+    // ctx.beginPath()
+    // ctx.arc(currX, currY, 1, 0, 2 * Math.PI)
+    // ctx.fill()
+    // ctx.closePath()
   }
 }

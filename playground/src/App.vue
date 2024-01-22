@@ -8,7 +8,7 @@ let handleClick = () => {}
 const isShow = ref(true)
 onMounted(() => {
   const { startAnimation, isAnimating } = html2particle(containerRef.value!, {
-    type: 'Particle',
+    type: 'ExplodingParticle',
   })
   handleClick = () => {
     isShow.value = false

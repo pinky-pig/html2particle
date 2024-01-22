@@ -20,7 +20,7 @@ interface IDisplayObj {
   particlesize: number
   particleObj: {
     startTime: number
-    myParticle: any[]
+    myParticles: any[]
   }
   animationDuration: number
   canvas?: HTMLCanvasElement
@@ -57,7 +57,7 @@ export default function main(
     particlesize: option.particlesize ?? 5,
     particleObj: {
       startTime: Date.now(),
-      myParticle: [],
+      myParticles: [],
     },
     animationDuration: 1000,
   }
@@ -134,10 +134,10 @@ export default function main(
     particle.rgbArray = rgbArr
     particle.startX = worldX
     particle.startY = worldY
-    particle.index = disObj.particleObj.myParticle.length
+    particle.index = disObj.particleObj.myParticles.length
     // 粒子运动 duration 时间
     disObj.animationDuration = particle.animationDuration
-    disObj.particleObj.myParticle.push(particle)
+    disObj.particleObj.myParticles.push(particle)
   }
 
   /** 粒子效果动画 */
@@ -148,15 +148,15 @@ export default function main(
 
       const percent = (Date.now() - disObj.particleObj.startTime) / disObj.animationDuration
 
-      for (let j = 0; j < disObj.particleObj.myParticle.length; j++)
-        disObj.particleObj.myParticle[j].draw(disObj.ctx, percent)
+      for (let j = 0; j < disObj.particleObj.myParticles.length; j++)
+        disObj.particleObj.myParticles[j].draw(disObj.ctx, percent)
 
-      // 动画结束
+      // 动画结束 这里的 1 是动画的时间。因为预设的两个动画都是 1000ms
+      // 判断的依据就是如果时间差超过动画的时间，那么就结束
       if (percent > 1) {
-        // Garbage collect
         disObj.particleObj = {
           startTime: Date.now(),
-          myParticle: [],
+          myParticles: [],
         }
         cancelAnimation()
       }
@@ -179,7 +179,7 @@ export default function main(
   function createSimultaneousparticle() {
     disObj.particleObj = {
       startTime: Date.now(),
-      myParticle: [],
+      myParticles: [],
     }
 
     // 处理粒子像素
@@ -204,8 +204,8 @@ export default function main(
   }
 
   function createAnimation() {
-    createSimultaneousparticle()
     isAnimating = true
+    createSimultaneousparticle()
   }
 
   function updateAnimation() {
@@ -215,8 +215,8 @@ export default function main(
   }
 
   function cancelAnimation() {
-    isAnimating = false
     cancelAnimationFrame(myReq)
+    isAnimating = false
   }
 
   return {

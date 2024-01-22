@@ -9,7 +9,7 @@ export const ExplodingParticle = function (this: any) {
   this.radius = 5 + Math.random() * 5
   this.life = 30 + Math.random() * 10
   this.remainingLife = this.life
-  this.draw = (ctx: { beginPath: () => void; arc: (arg0: any, arg1: any, arg2: any, arg3: number, arg4: number) => void; fillStyle: string; fill: () => void }) => {
+  this.draw = (ctx: CanvasRenderingContext2D, percent: number) => {
     if (this.remainingLife > 0
     && this.radius > 0) {
       ctx.beginPath()
