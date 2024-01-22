@@ -3,17 +3,18 @@ import { onMounted, ref } from 'vue'
 import html2particles from '../../packages/html2particles/src'
 
 const containerRef = ref<HTMLElement>()
-onMounted(() => {
-  const { startAnimation } = html2particles(containerRef.value!)
 
-  setTimeout(() => {
-    startAnimation()
-  }, 3000)
+let handleClick = () => {}
+onMounted(() => {
+  const { startAnimation } = html2particles(containerRef.value!, {
+    type: 'Particle',
+  })
+  handleClick = startAnimation
 })
 </script>
 
 <template>
-  <div ref="containerRef" class="container">
+  <div ref="containerRef" class="container" @click="handleClick">
     <img src="/default.webp" alt="">
   </div>
 </template>

@@ -1,15 +1,24 @@
 import html2canvas from 'html2canvas'
 
 interface IOptions {
-  type: 'default' | 'circle'
+  type: 'Particle' | 'ExplodingParticle'
+  animationFunctions?: 'ease-in' | 'ease-out' | 'ease-in-out'
+}
+
+interface Html2ParticlesReturn {
+  isAnimating: boolean
+  startAnimation: () => void
 }
 
 interface IDisplayObj {
-  elem: HTMLElement
+  el: HTMLElement
   actualWidth: number
   actualHeight: number
-  particleType: 'Particle'
-  particleArr: any[]
+  particleType: 'Particle' | 'ExplodingParticle'
+  particleObj: {
+    startTime: number
+    myParticles: any[]
+  }
   animationDuration: number
   canvas?: HTMLCanvasElement
   ctx?: CanvasRenderingContext2D
@@ -20,41 +29,38 @@ interface IDisplayObj {
 export default function main(
   root: HTMLElement,
   option: IOptions = {
-    type: 'default',
+    type: 'Particle',
   },
-) {
+): Html2ParticlesReturn {
+  // 是否进行动画。两个作用，一是导出出去，二是结束最后一个requestAnimationFrame
+  let isAnimating = false
+  // 截图数据，初始的时候存一下，省的后面再获取了
+  let screenshotData: Uint8ClampedArray | null = null
+  // 粒子动画效果
   const disParticleTypes: any[] = []
 
-  /********************/
-  /* Helper functions */
-  /********************/
-
+  // 展示的对象
   const disObj: IDisplayObj = {
-    elem: root,
+    el: root,
     actualWidth: root.offsetWidth,
     actualHeight: root.offsetHeight,
-    particleType: 'Particle',
-    particleArr: [],
-    animationDuration: 100,
+    particleType: option.type,
+    particleObj: {
+      startTime: Date.now(),
+      myParticles: [],
+    },
+    animationDuration: 1000,
   }
+
+  /********************/
+  /*      主函数       */
+  /********************/
+
   init()
-  /**
-   * 初始化
-   */
+
   async function init() {
-    // 1. 获取 DOM 截图
-    // 2. 创建动画方式
     await getScreenshot()
-
-    const { type } = option
-    switch (type) {
-      case 'default':
-        createSimultaneousParticles()
-        break
-
-      default:
-        break
-    }
+    screenshotData = getAllImageData()
   }
 
   /** 获取截图 */
@@ -64,7 +70,7 @@ export default function main(
         // 获取 DOM 的 canvas图像
         if (typeof disObj.scrnCanvas === 'undefined') {
           disObj.scrnCanvas = canvas
-          disObj.scrnCtx = canvas.getContext('2d')!
+          disObj.scrnCtx = canvas.getContext('2d', { willReadFrequently: true })!
         }
 
         // 创建 canvas 容器
@@ -78,7 +84,7 @@ export default function main(
           disObj.canvas.style.userSelect = 'none'
           disObj.canvas.style.pointerEvents = 'none'
           disObj.canvas.style.zIndex = '1001'
-          disObj.ctx = disObj.canvas.getContext('2d')!
+          disObj.ctx = disObj.canvas.getContext('2d', { willReadFrequently: true })!
           document.body.appendChild(disObj.canvas)
         }
 
@@ -96,45 +102,39 @@ export default function main(
   }
 
   /** 创建粒子效果 */
-  function createParticle(disObj: IDisplayObj, worldX: any, worldY: any, rgbArr: any, arrayIndex: string | number) {
-    let myType = disParticleTypes[0]
-    // Make sure the particle type is in Disintegrate's particle type list
-    disParticleTypes.forEach((type) => {
-      if (type.name === disObj.particleType)
-        myType = type
-    })
+  function createParticle(disObj: IDisplayObj, worldX: any, worldY: any, rgbArr: any) {
+    const MyType = disParticleTypes.find(type => type.name === disObj.particleType)
 
-    // Actually create the particle
-    // eslint-disable-next-line new-cap
-    const particle = new myType()
+    // 创建粒子
+    const particle = new MyType()
     particle.rgbArray = rgbArr
     particle.startX = worldX
     particle.startY = worldY
-    particle.arrayIndex = arrayIndex
-    particle.index = disObj.particleArr[arrayIndex].myParticles.length
+    particle.index = disObj.particleObj.myParticles.length
+    // 粒子运动 duration 时间
     disObj.animationDuration = particle.animationDuration
-    disObj.particleArr[arrayIndex].myParticles.push(particle)
-  }
-
-  /** 添加粒子效果 */
-  function addParticleType(func: any) {
-    disParticleTypes.push(func)
+    disObj.particleObj.myParticles.push(particle)
   }
 
   /** 粒子效果动画 */
   function animateParticles(disObj: IDisplayObj) {
-    if (typeof disObj.ctx !== 'undefined')
-      disObj.ctx.clearRect(0, 0, document.documentElement.scrollWidth, document.documentElement.scrollHeight)
+    if (isAnimating) {
+      if (typeof disObj.ctx !== 'undefined')
+        disObj.ctx.clearRect(0, 0, document.documentElement.scrollWidth, document.documentElement.scrollHeight)
 
-    for (let i = 0; (disObj.particleArr.length > 0 && i < disObj.particleArr.length); i++) {
-      const percent = (Date.now() - disObj.particleArr[i].startTime) / disObj.animationDuration
+      const percent = (Date.now() - disObj.particleObj.startTime) / disObj.animationDuration
 
-      for (let j = 0; j < disObj.particleArr[i].myParticles.length; j++)
-        disObj.particleArr[i].myParticles[j].draw(disObj.ctx, percent)
+      for (let j = 0; j < disObj.particleObj.myParticles.length; j++)
+        disObj.particleObj.myParticles[j].draw(disObj.ctx, percent)
 
-      if (i === disObj.particleArr.length - 1 && percent > 1) {
+      // 动画结束
+      if (percent > 1) {
         // Garbage collect
-        disObj.particleArr = []
+        disObj.particleObj = {
+          startTime: Date.now(),
+          myParticles: [],
+        }
+        cancelAnimation()
       }
     }
   }
@@ -142,6 +142,10 @@ export default function main(
   /*****************************/
   /* Specific particle effects */
   /*****************************/
+  function addParticleType(func: any) {
+    disParticleTypes.push(func)
+  }
+
   function genNormalizedVal() {
     return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() - 3)) / 3
   }
@@ -181,16 +185,42 @@ export default function main(
 
   addParticleType(Particle)
 
+  const ExplodingParticle = function (this: any) {
+    this.name = 'ExplodingParticle'
+    this.animationDuration = 1000 // in ms
+
+    this.speed = {
+      x: -5 + Math.random() * 10,
+      y: -5 + Math.random() * 10,
+    }
+    this.radius = 5 + Math.random() * 5
+    this.life = 30 + Math.random() * 10
+    this.remainingLife = this.life
+    this.draw = (ctx: { beginPath: () => void; arc: (arg0: any, arg1: any, arg2: any, arg3: number, arg4: number) => void; fillStyle: string; fill: () => void }) => {
+      if (this.remainingLife > 0
+      && this.radius > 0) {
+        ctx.beginPath()
+        ctx.arc(this.startX, this.startY, this.radius, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(${this.rgbArray[0]},${this.rgbArray[1]},${this.rgbArray[2]}, 1)`
+        ctx.fill()
+        this.remainingLife--
+        this.radius -= 0.25
+        this.startX += this.speed.x
+        this.startY += this.speed.y
+      }
+    }
+  }
+  addParticleType(ExplodingParticle)
+
   /*****************************/
   /*            Go             */
   /*****************************/
 
   function createSimultaneousParticles() {
-    disObj.particleArr.push({
+    disObj.particleObj = {
       startTime: Date.now(),
       myParticles: [],
-    })
-    const screenshotData = getAllImageData()
+    }
 
     // 处理粒子像素
     if (screenshotData) {
@@ -200,23 +230,37 @@ export default function main(
         for (let x = 0; x < disObj.actualWidth; x += particleSize) {
           const index = (y * disObj.actualWidth + x) * 4
           const colorData = screenshotData.slice(index, index + 4)
-          createParticle(disObj, x + Math.random() * 10 - 5, y + Math.random() * 10 - 5, colorData, 0)
+          createParticle(disObj, x + Math.random() * 10 - 5, y + Math.random() * 10 - 5, colorData)
         }
       }
     }
   }
 
-  // Animate all existing particles of the given Disintegrate element
-  // using their built in draw function
+  let myReq: any
 
   function startAnimation() {
-    animateParticles(disObj)
-    window.requestAnimationFrame(startAnimation)
+    createAnimation()
+    updateAnimation()
   }
 
-  startAnimation()
+  function createAnimation() {
+    createSimultaneousParticles()
+    isAnimating = true
+  }
+
+  function updateAnimation() {
+    animateParticles(disObj)
+    if (isAnimating)
+      myReq = window.requestAnimationFrame(updateAnimation)
+  }
+
+  function cancelAnimation() {
+    isAnimating = false
+    cancelAnimationFrame(myReq)
+  }
 
   return {
+    isAnimating,
     startAnimation,
   }
 }
