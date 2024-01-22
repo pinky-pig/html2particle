@@ -89,10 +89,15 @@ export default function main(
 
           disObj.canvas.style.position = 'absolute'
 
-          disObj.canvas.width = disObj.width
-          disObj.canvas.height = disObj.height
-          disObj.canvas.style.top = `${disObj.top}px`
-          disObj.canvas.style.left = `${disObj.left}px`
+          disObj.canvas.width = document.documentElement.scrollWidth
+          disObj.canvas.height = document.documentElement.scrollHeight
+          disObj.canvas.style.top = `${0}px`
+          disObj.canvas.style.left = `${0}px`
+
+          // disObj.canvas.width = disObj.width
+          // disObj.canvas.height = disObj.height
+          // disObj.canvas.style.top = `${disObj.top}px`
+          // disObj.canvas.style.left = `${disObj.left}px`
 
           disObj.canvas.style.userSelect = 'none'
           disObj.canvas.style.pointerEvents = 'none'
@@ -135,6 +140,9 @@ export default function main(
     particle.startX = worldX
     particle.startY = worldY
     particle.index = disObj.particleObj.myParticles.length
+    particle.disWidth = disObj.width
+    particle.disHeight = disObj.height
+
     // 粒子运动 duration 时间
     disObj.animationDuration = particle.animationDuration
     disObj.particleObj.myParticles.push(particle)
