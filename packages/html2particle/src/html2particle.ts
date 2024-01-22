@@ -20,7 +20,7 @@ interface IDisplayObj {
   particlesize: number
   particleObj: {
     startTime: number
-    myparticle: any[]
+    myParticle: any[]
   }
   animationDuration: number
   canvas?: HTMLCanvasElement
@@ -57,7 +57,7 @@ export default function main(
     particlesize: option.particlesize ?? 5,
     particleObj: {
       startTime: Date.now(),
-      myparticle: [],
+      myParticle: [],
     },
     animationDuration: 1000,
   }
@@ -134,10 +134,10 @@ export default function main(
     particle.rgbArray = rgbArr
     particle.startX = worldX
     particle.startY = worldY
-    particle.index = disObj.particleObj.myparticle.length
+    particle.index = disObj.particleObj.myParticle.length
     // 粒子运动 duration 时间
     disObj.animationDuration = particle.animationDuration
-    disObj.particleObj.myparticle.push(particle)
+    disObj.particleObj.myParticle.push(particle)
   }
 
   /** 粒子效果动画 */
@@ -148,15 +148,15 @@ export default function main(
 
       const percent = (Date.now() - disObj.particleObj.startTime) / disObj.animationDuration
 
-      for (let j = 0; j < disObj.particleObj.myparticle.length; j++)
-        disObj.particleObj.myparticle[j].draw(disObj.ctx, percent)
+      for (let j = 0; j < disObj.particleObj.myParticle.length; j++)
+        disObj.particleObj.myParticle[j].draw(disObj.ctx, percent)
 
       // 动画结束
       if (percent > 1) {
         // Garbage collect
         disObj.particleObj = {
           startTime: Date.now(),
-          myparticle: [],
+          myParticle: [],
         }
         cancelAnimation()
       }
@@ -179,7 +179,7 @@ export default function main(
   function createSimultaneousparticle() {
     disObj.particleObj = {
       startTime: Date.now(),
-      myparticle: [],
+      myParticle: [],
     }
 
     // 处理粒子像素

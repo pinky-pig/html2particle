@@ -23,7 +23,7 @@ export const Particle = function (this: any) {
   this.opacityFactor = Math.round(((genNormalizedVal() + 1) / 2) * 3 + 1)
   this.opacityFunc = (t: any) => 1 - EaseInOut(this.opacityFactor)(t)
 
-  this.draw = (ctx: { fillStyle: string; fillRect: (arg0: number, arg1: number, arg2: number, arg3: number) => void }, percent: number) => {
+  this.draw = (ctx: CanvasRenderingContext2D, percent: number) => {
     percent = percent >= 1 ? 1 : percent
 
     const currX = this.startX + this.xPosFunc(percent) * this.widthScaler
