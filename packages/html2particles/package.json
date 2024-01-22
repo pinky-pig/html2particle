@@ -1,0 +1,48 @@
+{
+  "name": "html2particles",
+  "type": "module",
+  "version": "0.0.0",
+  "private": false,
+  "author": "pinky-pig",
+  "license": "MIT",
+  "homepage": "https://what-is-html2particles.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pinky-pig/html2particles"
+  },
+  "keywords": [
+    "vue3-dragblock",
+    "vue3-drag-resize-component",
+    "drag",
+    "resize",
+    "adsrob"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/html2particles.umd.js",
+      "import": "./dist/html2particles.es.js"
+    }
+  },
+  "main": "./dist/html2particles.umd.js",
+  "module": "./dist/html2particles.es.js",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.3",
+    "vue": "^3.2.45"
+  }
+}
