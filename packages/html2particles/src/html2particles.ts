@@ -13,8 +13,10 @@ interface Html2ParticlesReturn {
 
 interface IDisplayObj {
   el: HTMLElement
-  actualWidth: number
-  actualHeight: number
+  width: number
+  height: number
+  top: number
+  left: number
   particleType: 'Particle' | 'ExplodingParticle'
   particleSize: number
   particleObj: {
@@ -43,10 +45,14 @@ export default function main(
   const disParticleTypes: any[] = []
 
   // 展示的对象
+  const bound = getCoords(root)
+
   const disObj: IDisplayObj = {
     el: root,
-    actualWidth: root.offsetWidth,
-    actualHeight: root.offsetHeight,
+    width: bound.width,
+    height: bound.height,
+    top: bound.top,
+    left: bound.left,
     particleType: option.type,
     particleSize: option.particleSize ?? 5,
     particleObj: {
@@ -70,7 +76,7 @@ export default function main(
   /** 获取截图 */
   function getScreenshot() {
     return new Promise((resolve) => {
-      html2canvas(root, { scale: 1, useCORS: true }).then((canvas) => {
+      html2canvas(disObj.el, { scale: 1, useCORS: true }).then((canvas) => {
         // 获取 DOM 的 canvas图像
         if (typeof disObj.scrnCanvas === 'undefined') {
           disObj.scrnCanvas = canvas
@@ -80,11 +86,14 @@ export default function main(
         // 创建 canvas 容器
         if (typeof disObj.canvas === 'undefined') {
           disObj.canvas = document.createElement('canvas')
-          disObj.canvas.width = document.documentElement.scrollWidth
-          disObj.canvas.height = document.documentElement.scrollHeight
+
           disObj.canvas.style.position = 'absolute'
-          disObj.canvas.style.top = `${0}`
-          disObj.canvas.style.left = `${0}`
+
+          disObj.canvas.width = disObj.width
+          disObj.canvas.height = disObj.height
+          disObj.canvas.style.top = `${disObj.top}px`
+          disObj.canvas.style.left = `${disObj.left}px`
+
           disObj.canvas.style.userSelect = 'none'
           disObj.canvas.style.pointerEvents = 'none'
           disObj.canvas.style.zIndex = '1001'
@@ -100,9 +109,20 @@ export default function main(
   /** 获取截图数据 */
   function getAllImageData() {
     if (disObj.scrnCtx)
-      return disObj.scrnCtx.getImageData(0, 0, disObj.actualWidth, disObj.actualHeight).data
+      return disObj.scrnCtx.getImageData(0, 0, disObj.width, disObj.height).data
     else
       return null
+  }
+
+  function getCoords(el: HTMLElement) {
+    const box = el.getBoundingClientRect()
+
+    return {
+      width: box.width,
+      height: box.height,
+      top: box.top,
+      left: box.left,
+    }
   }
 
   /** 创建粒子效果 */
@@ -164,9 +184,9 @@ export default function main(
 
     // 处理粒子像素
     if (screenshotData) {
-      for (let y = 0; y < disObj.actualHeight; y += disObj.particleSize) {
-        for (let x = 0; x < disObj.actualWidth; x += disObj.particleSize) {
-          const index = (y * disObj.actualWidth + x) * 4
+      for (let y = 0; y < disObj.height; y += disObj.particleSize) {
+        for (let x = 0; x < disObj.width; x += disObj.particleSize) {
+          const index = (y * disObj.width + x) * 4
           const colorData = screenshotData.slice(index, index + disObj.particleSize)
 
           const startX = x + Math.random() * 10 - disObj.particleSize
