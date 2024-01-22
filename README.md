@@ -15,8 +15,8 @@
 </p>
 
 
-演示地址： [Demo](https://dragblock.mmeme.me/)  
-仓库地址： [Github](https://github.com/pinky-pig/what-is-html2particle)
+演示地址： [Demo](https://html2particle.mmeme.me/)  
+仓库地址： [Github](https://github.com/pinky-pig/html2particle)
 
 ## 🎉 Introduce
 

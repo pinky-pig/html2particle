@@ -1,7 +1,7 @@
 {
-  "name": "html2particle",
+  "name": "html2particles",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "private": false,
   "author": "pinky-pig",
   "license": "MIT",
