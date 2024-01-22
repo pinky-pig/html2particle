@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { markRaw, ref } from 'vue'
-import V3Dragblock from '../../html2particles/src'
+import V3Dragblock from '../../html2particle/src'
 import GridCellOne from '../components/GridCellOne.vue'
 import GridCellTwo from '../components/GridCellTwo.vue'
 import GridCellThree from '../components/GridCellThree.vue'

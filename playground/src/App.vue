@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import html2particles from '../../packages/html2particles/src'
+import html2particle from '../../packages/html2particle/src'
 
 const containerRef = ref<HTMLElement>()
 
 let handleClick = () => {}
 const isShow = ref(true)
 onMounted(() => {
-  const { startAnimation } = html2particles(containerRef.value!, {
+  const { startAnimation, isAnimating } = html2particle(containerRef.value!, {
     type: 'Particle',
   })
   handleClick = () => {

@@ -2,11 +2,10 @@ import html2canvas from 'html2canvas'
 import { ExplodingParticle, Particle } from './effect'
 interface IOptions {
   type: 'Particle' | 'ExplodingParticle'
-  animationFunctions?: 'ease-in' | 'ease-out' | 'ease-in-out'
-  particleSize?: number
+  particleize?: number
 }
 
-interface Html2ParticlesReturn {
+interface Html2particleReturn {
   isAnimating: boolean
   startAnimation: () => void
 }
@@ -18,10 +17,10 @@ interface IDisplayObj {
   top: number
   left: number
   particleType: 'Particle' | 'ExplodingParticle'
-  particleSize: number
+  particleize: number
   particleObj: {
     startTime: number
-    myParticles: any[]
+    myparticle: any[]
   }
   animationDuration: number
   canvas?: HTMLCanvasElement
@@ -31,12 +30,12 @@ interface IDisplayObj {
 }
 
 export default function main(
-  root: HTMLElement,
+  el: HTMLElement,
   option: IOptions = {
     type: 'Particle',
-    particleSize: 5,
+    particleize: 5,
   },
-): Html2ParticlesReturn {
+): Html2particleReturn {
   // 是否进行动画。两个作用，一是导出出去，二是结束最后一个 requestAnimationFrame
   let isAnimating = false
   // 截图数据，初始的时候存一下，省的后面再获取了
@@ -46,19 +45,19 @@ export default function main(
   // requestAnimationFrame
   let myReq: any
   // 展示的对象
-  const bound = getCoords(root)
+  const bound = getCoords(el)
 
   const disObj: IDisplayObj = {
-    el: root,
+    el,
     width: bound.width,
     height: bound.height,
     top: bound.top,
     left: bound.left,
     particleType: option.type,
-    particleSize: option.particleSize ?? 5,
+    particleize: option.particleize ?? 5,
     particleObj: {
       startTime: Date.now(),
-      myParticles: [],
+      myparticle: [],
     },
     animationDuration: 1000,
   }
@@ -135,29 +134,29 @@ export default function main(
     particle.rgbArray = rgbArr
     particle.startX = worldX
     particle.startY = worldY
-    particle.index = disObj.particleObj.myParticles.length
+    particle.index = disObj.particleObj.myparticle.length
     // 粒子运动 duration 时间
     disObj.animationDuration = particle.animationDuration
-    disObj.particleObj.myParticles.push(particle)
+    disObj.particleObj.myparticle.push(particle)
   }
 
   /** 粒子效果动画 */
-  function animateParticles(disObj: IDisplayObj) {
+  function animateparticle(disObj: IDisplayObj) {
     if (isAnimating) {
       if (typeof disObj.ctx !== 'undefined')
         disObj.ctx.clearRect(0, 0, document.documentElement.scrollWidth, document.documentElement.scrollHeight)
 
       const percent = (Date.now() - disObj.particleObj.startTime) / disObj.animationDuration
 
-      for (let j = 0; j < disObj.particleObj.myParticles.length; j++)
-        disObj.particleObj.myParticles[j].draw(disObj.ctx, percent)
+      for (let j = 0; j < disObj.particleObj.myparticle.length; j++)
+        disObj.particleObj.myparticle[j].draw(disObj.ctx, percent)
 
       // 动画结束
       if (percent > 1) {
         // Garbage collect
         disObj.particleObj = {
           startTime: Date.now(),
-          myParticles: [],
+          myparticle: [],
         }
         cancelAnimation()
       }
@@ -177,21 +176,21 @@ export default function main(
   /*            Go             */
   /*****************************/
 
-  function createSimultaneousParticles() {
+  function createSimultaneousparticle() {
     disObj.particleObj = {
       startTime: Date.now(),
-      myParticles: [],
+      myparticle: [],
     }
 
     // 处理粒子像素
     if (screenshotData) {
-      for (let y = 0; y < disObj.height; y += disObj.particleSize) {
-        for (let x = 0; x < disObj.width; x += disObj.particleSize) {
+      for (let y = 0; y < disObj.height; y += disObj.particleize) {
+        for (let x = 0; x < disObj.width; x += disObj.particleize) {
           const index = (y * disObj.width + x) * 4
-          const colorData = screenshotData.slice(index, index + disObj.particleSize)
+          const colorData = screenshotData.slice(index, index + disObj.particleize)
 
-          const startX = x + Math.random() * 10 - disObj.particleSize
-          const startY = y + Math.random() * 10 - disObj.particleSize
+          const startX = x + Math.random() * 10 - disObj.particleize
+          const startY = y + Math.random() * 10 - disObj.particleize
 
           createParticle(disObj, startX, startY, colorData)
         }
@@ -205,12 +204,12 @@ export default function main(
   }
 
   function createAnimation() {
-    createSimultaneousParticles()
+    createSimultaneousparticle()
     isAnimating = true
   }
 
   function updateAnimation() {
-    animateParticles(disObj)
+    animateparticle(disObj)
     if (isAnimating)
       myReq = window.requestAnimationFrame(updateAnimation)
   }

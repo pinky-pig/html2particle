@@ -2,7 +2,7 @@
   <div
     class="dragItemBox"
   >
-    html2particles
+    html2particle
   </div>
 </template>
 

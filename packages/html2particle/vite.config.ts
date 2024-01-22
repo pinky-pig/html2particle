@@ -13,8 +13,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'html2particles',
-      fileName: format => `html2particles.${format}.js`,
+      name: 'html2particle',
+      fileName: format => `html2particle.${format}.js`,
     },
   },
 

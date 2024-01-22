@@ -12,22 +12,22 @@ features:
     title: Handles
     details: 事件触发的函数
 hero:
-  name: html2particles
+  name: html2particle
   text: ''
   tagline: 一个Vue3开发的拖拽组件
   image:
     src: /logo.svg
-    alt: html2particles
+    alt: html2particle
   actions:
     - theme: brand
       text: Get Started
       link: /guide/
     - theme: alt
       text: View on GitHub
-      link: https://github.com/pinky-pig/what-is-html2particles
+      link: https://github.com/pinky-pig/what-is-html2particle
     - theme: alt
       text: View on NPM
-      link: https://www.npmjs.com/package/html2particles
+      link: https://www.npmjs.com/package/html2particle
 ---
 
 <style>

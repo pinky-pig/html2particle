@@ -35,7 +35,7 @@
 传入要拖拽的组件数组，要具有以下格式：
 
 ```js
-import V3Dragblock from 'html2particles'
+import V3Dragblock from 'html2particle'
 import GridCellOne from '../components/GridCellOne.vue'
 import GridCellTwo from '../components/GridCellTwo.vue'
 import GridCellThree from '../components/GridCellThree.vue'

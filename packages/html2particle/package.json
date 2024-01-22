@@ -1,14 +1,14 @@
 {
-  "name": "html2particles",
+  "name": "html2particle",
   "type": "module",
   "version": "0.0.0",
   "private": false,
   "author": "pinky-pig",
   "license": "MIT",
-  "homepage": "https://what-is-html2particles.vercel.app/",
+  "homepage": "https://what-is-html2particle.vercel.app/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pinky-pig/html2particles"
+    "url": "https://github.com/pinky-pig/html2particle"
   },
   "keywords": [
     "vue3-dragblock",
@@ -19,12 +19,12 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/html2particles.umd.js",
-      "import": "./dist/html2particles.es.js"
+      "require": "./dist/html2particle.umd.js",
+      "import": "./dist/html2particle.es.js"
     }
   },
-  "main": "./dist/html2particles.umd.js",
-  "module": "./dist/html2particles.es.js",
+  "main": "./dist/html2particle.umd.js",
+  "module": "./dist/html2particle.es.js",
   "types": "./dist/index.d.ts",
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
