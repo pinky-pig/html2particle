@@ -37,13 +37,14 @@ export default function main(
     particleSize: 5,
   },
 ): Html2ParticlesReturn {
-  // 是否进行动画。两个作用，一是导出出去，二是结束最后一个requestAnimationFrame
+  // 是否进行动画。两个作用，一是导出出去，二是结束最后一个 requestAnimationFrame
   let isAnimating = false
   // 截图数据，初始的时候存一下，省的后面再获取了
   let screenshotData: Uint8ClampedArray | null = null
   // 粒子动画效果
   const disParticleTypes: any[] = []
-
+  // requestAnimationFrame
+  let myReq: any
   // 展示的对象
   const bound = getCoords(root)
 
@@ -197,8 +198,6 @@ export default function main(
       }
     }
   }
-
-  let myReq: any
 
   function startAnimation() {
     createAnimation()
