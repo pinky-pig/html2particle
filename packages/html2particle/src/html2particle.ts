@@ -2,7 +2,7 @@ import html2canvas from 'html2canvas'
 import { ExplodingParticle, Particle } from './effect'
 interface IOptions {
   type: 'Particle' | 'ExplodingParticle'
-  particleize?: number
+  particlesize?: number
 }
 
 interface Html2particleReturn {
@@ -17,7 +17,7 @@ interface IDisplayObj {
   top: number
   left: number
   particleType: 'Particle' | 'ExplodingParticle'
-  particleize: number
+  particlesize: number
   particleObj: {
     startTime: number
     myparticle: any[]
@@ -33,7 +33,7 @@ export default function main(
   el: HTMLElement,
   option: IOptions = {
     type: 'Particle',
-    particleize: 5,
+    particlesize: 5,
   },
 ): Html2particleReturn {
   // 是否进行动画。两个作用，一是导出出去，二是结束最后一个 requestAnimationFrame
@@ -54,7 +54,7 @@ export default function main(
     top: bound.top,
     left: bound.left,
     particleType: option.type,
-    particleize: option.particleize ?? 5,
+    particlesize: option.particlesize ?? 5,
     particleObj: {
       startTime: Date.now(),
       myparticle: [],
@@ -184,13 +184,13 @@ export default function main(
 
     // 处理粒子像素
     if (screenshotData) {
-      for (let y = 0; y < disObj.height; y += disObj.particleize) {
-        for (let x = 0; x < disObj.width; x += disObj.particleize) {
+      for (let y = 0; y < disObj.height; y += disObj.particlesize) {
+        for (let x = 0; x < disObj.width; x += disObj.particlesize) {
           const index = (y * disObj.width + x) * 4
-          const colorData = screenshotData.slice(index, index + disObj.particleize)
+          const colorData = screenshotData.slice(index, index + disObj.particlesize)
 
-          const startX = x + Math.random() * 10 - disObj.particleize
-          const startY = y + Math.random() * 10 - disObj.particleize
+          const startX = x + Math.random() * 10 - disObj.particlesize
+          const startY = y + Math.random() * 10 - disObj.particlesize
 
           createParticle(disObj, startX, startY, colorData)
         }
