@@ -3,6 +3,7 @@ import html2canvas from 'html2canvas'
 interface IOptions {
   type: 'Particle' | 'ExplodingParticle'
   animationFunctions?: 'ease-in' | 'ease-out' | 'ease-in-out'
+  particleSize?: number
 }
 
 interface Html2ParticlesReturn {
@@ -15,6 +16,7 @@ interface IDisplayObj {
   actualWidth: number
   actualHeight: number
   particleType: 'Particle' | 'ExplodingParticle'
+  particleSize: number
   particleObj: {
     startTime: number
     myParticles: any[]
@@ -30,6 +32,7 @@ export default function main(
   root: HTMLElement,
   option: IOptions = {
     type: 'Particle',
+    particleSize: 5,
   },
 ): Html2ParticlesReturn {
   // 是否进行动画。两个作用，一是导出出去，二是结束最后一个requestAnimationFrame
@@ -45,6 +48,7 @@ export default function main(
     actualWidth: root.offsetWidth,
     actualHeight: root.offsetHeight,
     particleType: option.type,
+    particleSize: option.particleSize ?? 5,
     particleObj: {
       startTime: Date.now(),
       myParticles: [],
@@ -102,7 +106,7 @@ export default function main(
   }
 
   /** 创建粒子效果 */
-  function createParticle(disObj: IDisplayObj, worldX: any, worldY: any, rgbArr: any) {
+  function createParticle(disObj: IDisplayObj, worldX: number, worldY: number, rgbArr: any) {
     const MyType = disParticleTypes.find(type => type.name === disObj.particleType)
 
     // 创建粒子
@@ -140,7 +144,7 @@ export default function main(
   }
 
   /*****************************/
-  /* Specific particle effects */
+  /*       粒子动画效果          */
   /*****************************/
   function addParticleType(func: any) {
     disParticleTypes.push(func)
@@ -224,13 +228,15 @@ export default function main(
 
     // 处理粒子像素
     if (screenshotData) {
-      const particleSize = 5
-
-      for (let y = 0; y < disObj.actualHeight; y += particleSize) {
-        for (let x = 0; x < disObj.actualWidth; x += particleSize) {
+      for (let y = 0; y < disObj.actualHeight; y += disObj.particleSize) {
+        for (let x = 0; x < disObj.actualWidth; x += disObj.particleSize) {
           const index = (y * disObj.actualWidth + x) * 4
-          const colorData = screenshotData.slice(index, index + 4)
-          createParticle(disObj, x + Math.random() * 10 - 5, y + Math.random() * 10 - 5, colorData)
+          const colorData = screenshotData.slice(index, index + disObj.particleSize)
+
+          const startX = x + Math.random() * 10 - disObj.particleSize
+          const startY = y + Math.random() * 10 - disObj.particleSize
+
+          createParticle(disObj, startX, startY, colorData)
         }
       }
     }
