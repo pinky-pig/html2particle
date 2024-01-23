@@ -1,7 +1,7 @@
 import html2canvas from 'html2canvas'
-import { ExplodingParticle, Particle } from './effect'
+import { ExplodingParticle, SinWave } from './effect'
 interface IOptions {
-  type: 'Particle' | 'ExplodingParticle'
+  type: 'SinWave' | 'ExplodingParticle'
   particlesize?: number
 }
 
@@ -16,7 +16,7 @@ interface IDisplayObj {
   height: number
   top: number
   left: number
-  particleType: 'Particle' | 'ExplodingParticle'
+  particleType: 'SinWave' | 'ExplodingParticle'
   particlesize: number
   particleObj: {
     startTime: number
@@ -32,7 +32,7 @@ interface IDisplayObj {
 export default function main(
   el: HTMLElement,
   option: IOptions = {
-    type: 'Particle',
+    type: 'SinWave',
     particlesize: 5,
   },
 ): Html2particleReturn {
@@ -54,7 +54,7 @@ export default function main(
     top: bound.top,
     left: bound.left,
     particleType: option.type,
-    particlesize: option.particlesize ?? 5,
+    particlesize: option.particlesize!,
     particleObj: {
       startTime: Date.now(),
       myParticles: [],
@@ -177,7 +177,7 @@ export default function main(
   function addParticleType(func: any) {
     disParticleTypes.push(func)
   }
-  addParticleType(Particle)
+  addParticleType(SinWave)
   addParticleType(ExplodingParticle)
 
   /*****************************/
@@ -200,7 +200,7 @@ export default function main(
           const startX = x + Math.random() * 10 - disObj.particlesize
           const startY = y + Math.random() * 10 - disObj.particlesize
 
-          createParticle(disObj, startX, startY, colorData)
+          createParticle(disObj, disObj.left + startX, disObj.top + startY, colorData)
         }
       }
     }

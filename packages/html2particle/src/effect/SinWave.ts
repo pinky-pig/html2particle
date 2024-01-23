@@ -6,7 +6,12 @@ function genNormalizedVal() {
   return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() - 3)) / 3
 }
 
-export const Particle = function (this: any) {
+/********************************************************/
+/*                 x方向正弦波动                          */
+/*                 y方向匀速运动                          */
+/********************************************************/
+
+export const SinWave = function (this: any) {
   this.name = 'Particle'
   this.animationDuration = 1000 // in ms
 

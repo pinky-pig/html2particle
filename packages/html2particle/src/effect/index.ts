@@ -1,2 +1,2 @@
 export * from './Exploding'
-export * from './Particle'
+export * from './SinWave'
