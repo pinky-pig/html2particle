@@ -36,7 +36,7 @@ export const SinWaveParticle = function (this: any) {
     const currSize = this.startSize * this.sizeFunc(percent)
     const currOpacity = this.opacityFunc(percent)
 
-    ctx.fillStyle = `rgba(${this.rgbArray[0]},${this.rgbArray[1]},${this.rgbArray[2]},${currOpacity})`
+    ctx.fillStyle = `rgba(${this.rgbArray[0]},${this.rgbArray[1]},${this.rgbArray[2]},${this.rgbArray[3]})`
     ctx.fillRect(currX - currSize / 2, currY - currSize / 2, currSize, currSize)
 
     // 绘制圆形

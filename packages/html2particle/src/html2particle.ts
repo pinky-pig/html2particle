@@ -76,7 +76,7 @@ export default function main(
   /** 获取截图 */
   function getScreenshot() {
     return new Promise((resolve) => {
-      html2canvas(disObj.el, { scale: 1, useCORS: true }).then((canvas) => {
+      html2canvas(disObj.el, { scale: 1, useCORS: true, backgroundColor: null }).then((canvas) => {
         // 获取 DOM 的 canvas图像
         if (typeof disObj.scrnCanvas === 'undefined') {
           disObj.scrnCanvas = canvas
@@ -99,6 +99,8 @@ export default function main(
           disObj.canvas.style.zIndex = '1001'
           disObj.ctx = disObj.canvas.getContext('2d', { willReadFrequently: true })!
           document.body.appendChild(disObj.canvas)
+
+          // document.body.appendChild(canvas) // 截图添加到 document 上预览
         }
 
         resolve('gengrate DOM canvas')
@@ -150,7 +152,6 @@ export default function main(
         disObj.ctx.clearRect(0, 0, document.documentElement.scrollWidth, document.documentElement.scrollHeight)
 
       const percent = (Date.now() - disObj.particleObj.startTime) / disObj.animationDuration
-
       for (let j = 0; j < disObj.particleObj.myParticles.length; j++)
         disObj.particleObj.myParticles[j].draw(disObj.ctx, percent)
 
@@ -161,6 +162,8 @@ export default function main(
           startTime: Date.now(),
           myParticles: [],
         }
+        if (typeof disObj.ctx !== 'undefined')
+          disObj.ctx.clearRect(0, 0, document.documentElement.scrollWidth, document.documentElement.scrollHeight)
         cancelAnimation()
       }
     }
