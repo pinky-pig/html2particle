@@ -11,8 +11,8 @@ function genNormalizedVal() {
 /*                 y方向匀速运动                          */
 /********************************************************/
 
-export const SinWave = function (this: any) {
-  this.name = 'Particle'
+export const SinWaveParticle = function (this: any) {
+  this.name = 'SinWaveParticle'
   this.animationDuration = 1000 // in ms
 
   this.widthScaler = Math.round(50 * genNormalizedVal()) // Normalized val between -50 and 50
