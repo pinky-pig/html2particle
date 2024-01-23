@@ -107,12 +107,14 @@ export default function main(
         if (typeof disObj.canvas === 'undefined') {
           disObj.canvas = document.createElement('canvas')
 
-          disObj.canvas.style.position = 'absolute'
+          disObj.canvas.style.position = 'fixed'
 
           disObj.canvas.width = document.documentElement.scrollWidth
           disObj.canvas.height = document.documentElement.scrollHeight
           disObj.canvas.style.top = `${0}px`
           disObj.canvas.style.left = `${0}px`
+          disObj.canvas.style.right = `${0}px`
+          disObj.canvas.style.bottom = `${0}px`
 
           disObj.canvas.style.userSelect = 'none'
           disObj.canvas.style.pointerEvents = 'none'
@@ -153,18 +155,22 @@ export default function main(
     window.addEventListener('resize', (e) => {
       clearTimeout(resizeTimer)
       resizeTimer = setTimeout(() => {
-        if (disObj.canvas) {
-          disObj.canvas.width = window.innerWidth
-          disObj.canvas.height = window.innerHeight
-
-          const resizeDisBound = getCoords(disObj.el)
-          disObj.width = resizeDisBound.width
-          disObj.height = resizeDisBound.height
-          disObj.top = resizeDisBound.top
-          disObj.left = resizeDisBound.left
-        }
+        updateCanvasAndDisObjProperty()
       }, 250)
     })
+  }
+
+  function updateCanvasAndDisObjProperty() {
+    if (disObj.canvas) {
+      disObj.canvas.width = document.documentElement.scrollWidth
+      disObj.canvas.height = document.documentElement.scrollHeight
+
+      const resizeDisBound = getCoords(disObj.el)
+      disObj.width = resizeDisBound.width
+      disObj.height = resizeDisBound.height
+      disObj.top = resizeDisBound.top
+      disObj.left = resizeDisBound.left
+    }
   }
 
   /** 创建粒子效果 */
@@ -240,8 +246,12 @@ export default function main(
   }
 
   function startAnimation() {
-    createAnimation()
-    updateAnimation()
+    updateCanvasAndDisObjProperty()
+
+    setTimeout(() => {
+      createAnimation()
+      updateAnimation()
+    })
   }
 
   function createAnimation() {

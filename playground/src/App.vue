@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue'
 import html2particle from '../../packages/html2particle/src/index'
 
 const item1Ref = ref<HTMLElement>()
-let handleItem1Click = () => {}
+let handleItem1Click = () => { }
 const isShow1 = ref(true)
 function initItem1Event() {
   const { startAnimation } = html2particle(item1Ref.value!, { type: 'SinWaveParticle' })
@@ -15,7 +15,7 @@ function initItem1Event() {
 }
 
 const item2Ref = ref<HTMLElement>()
-let handleItem2Click = () => {}
+let handleItem2Click = () => { }
 const isShow2 = ref(true)
 function initItem2Event() {
   const { startAnimation } = html2particle(item2Ref.value!, { type: 'ExplodingParticle' })
@@ -26,7 +26,7 @@ function initItem2Event() {
 }
 
 const item3Ref = ref<HTMLElement>()
-let handleItem3Click = () => {}
+let handleItem3Click = () => { }
 const isShow3 = ref(true)
 function initItem3Event() {
   const { startAnimation } = html2particle(item3Ref.value!, { type: 'SinWaveParticle' })
@@ -37,7 +37,7 @@ function initItem3Event() {
 }
 
 const item4Ref = ref<HTMLElement>()
-let handleItem4Click = () => {}
+let handleItem4Click = () => { }
 const isShow4 = ref(true)
 function initItem4Event() {
   const { startAnimation } = html2particle(item4Ref.value!, { type: 'ExplodingParticle' })
@@ -48,7 +48,7 @@ function initItem4Event() {
 }
 
 const item5Ref = ref<HTMLElement>()
-let handleItem5Click = () => {}
+let handleItem5Click = () => { }
 const isShow5 = ref(true)
 function initItem5Event() {
   const { startAnimation } = html2particle(item5Ref.value!, { type: 'SinWaveParticle' })
@@ -74,34 +74,43 @@ onMounted(() => {
     </div>
 
     <div ref="item2Ref" class="emoji" @click="handleItem2Click">
-      <span v-if="isShow2">🍑</span>
+      <span>🍑</span>
     </div>
 
     <div ref="item3Ref" class="emoji" @click="handleItem3Click">
-      <span v-if="isShow3">🥰</span>
+      <span>🥰</span>
     </div>
 
     <div ref="item4Ref" class="image" @click="handleItem4Click">
-      <img v-if="isShow4" src="/1.jpg" alt="">
+      <img src="/1.jpg" alt="">
     </div>
 
     <div ref="item5Ref" class="image" @click="handleItem5Click">
-      <img v-if="isShow5" src="/2.jpg" alt="">
+      <img src="/2.jpg" alt="">
     </div>
   </div>
 </template>
 
 <style scoped>
-.container{
+.container {
   display: grid;
-  grid-template-columns: repeat(2,auto);
-  grid-template-rows: repeat(3,auto);
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(3, auto);
   gap: 20px;
   row-gap: 50px;
   align-items: center;
   user-select: none;
 }
-.text{
+
+@media screen and (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr !important;
+  }
+  .text{
+    grid-column: span 1 !important;
+  }
+}
+.text {
   --text-color: #887cc8;
   grid-column: span 2;
   font-family: 'Cherry Bomb One', cursive;
@@ -111,21 +120,27 @@ onMounted(() => {
   color: var(--text-color);
   -webkit-text-stroke: 6px #fff;
   z-index: 1;
+  margin: 0 auto;
 }
-.text::before{
+
+.text::before {
   content: 'Hello world!';
   position: absolute;
   color: transparent;
   -webkit-text-stroke: 40px var(--text-color);
   z-index: -1;
+  top: 0;
+  left: 0;
 }
 
-.image{
+.image {
   width: 300px;
   height: 200px;
   cursor: pointer;
+  margin: 0 auto;
 }
-img{
+
+img {
   object-fit: cover;
   width: 100%;
   height: 100%;
@@ -134,7 +149,8 @@ img{
   outline: 2px solid #887cc8;
   outline-offset: 2px;
 }
-.emoji{
+
+.emoji {
   width: 100%;
   height: 180px;
   font-size: 120px;
