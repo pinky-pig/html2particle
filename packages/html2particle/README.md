@@ -42,7 +42,7 @@ npm i html2particle
 ```vue
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import html2particle from '../../packages/html2particle/src'
+import html2particle from 'html2particle'
 
 const containerRef = ref<HTMLElement>()
 
