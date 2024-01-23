@@ -1,3 +1,11 @@
+const EaseIn = (power: number) => (t: number) => t ** power
+const EaseOut = (power: number) => (t: number) => 1 - Math.abs((t - 1) ** power)
+const EaseInOut = (power: any) => (t: number) => t < 0.5 ? EaseIn(power)(t * 2) / 2 : EaseOut(power)(t * 2 - 1) / 2 + 0.5
+
+function genNormalizedVal() {
+  return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() - 3)) / 3
+}
+
 export const ExplodingParticle = function (this: any) {
   this.name = 'ExplodingParticle'
   this.animationDuration = 3000 // in ms
@@ -18,16 +26,21 @@ export const ExplodingParticle = function (this: any) {
   this.life = 30 + Math.random() * 10
   this.remainingLife = this.life
 
+  this.opacityFactor = Math.round(((genNormalizedVal() + 1) / 2) * 3 + 1)
+  this.opacityFunc = (t: any) => 1 - EaseInOut(this.opacityFactor)(t)
+
   this.draw = (ctx: CanvasRenderingContext2D, percent: number) => {
-    if (this.remainingLife > 0
-    && this.radius > 0) {
+    percent = percent >= 1 ? 1 : percent
+    const currOpacity = this.opacityFunc(percent)
+
+    if (this.remainingLife > 0 && this.radius > 0) {
       ctx.beginPath()
       ctx.arc(this.startX, this.startY, this.radius, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(${this.rgbArray[0]},${this.rgbArray[1]},${this.rgbArray[2]}, 1)`
+      ctx.fillStyle = `rgba(${this.rgbArray[0]},${this.rgbArray[1]},${this.rgbArray[2]}, ${currOpacity})`
       ctx.fill()
       this.remainingLife--
-      // this.radius -= 0.25
 
+      // this.radius -= 0.25
       this.radius = 1
 
       this.speed.y += this.speed.ay

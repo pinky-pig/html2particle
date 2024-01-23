@@ -94,11 +94,6 @@ export default function main(
           disObj.canvas.style.top = `${0}px`
           disObj.canvas.style.left = `${0}px`
 
-          // disObj.canvas.width = disObj.width
-          // disObj.canvas.height = disObj.height
-          // disObj.canvas.style.top = `${disObj.top}px`
-          // disObj.canvas.style.left = `${disObj.left}px`
-
           disObj.canvas.style.userSelect = 'none'
           disObj.canvas.style.pointerEvents = 'none'
           disObj.canvas.style.zIndex = '1001'
