@@ -74,19 +74,19 @@ onMounted(() => {
     </div>
 
     <div ref="item2Ref" class="emoji" @click="handleItem2Click">
-      <span>🍑</span>
+      <span v-if="isShow2">🍑</span>
     </div>
 
     <div ref="item3Ref" class="emoji" @click="handleItem3Click">
-      <span>🥰</span>
+      <span v-if="isShow3">🥰</span>
     </div>
 
     <div ref="item4Ref" class="image" @click="handleItem4Click">
-      <img src="/1.jpg" alt="">
+      <img v-if="isShow4" src="/1.jpg" alt="">
     </div>
 
     <div ref="item5Ref" class="image" @click="handleItem5Click">
-      <img src="/2.jpg" alt="">
+      <img v-if="isShow5" src="/2.jpg" alt="">
     </div>
   </div>
 </template>
