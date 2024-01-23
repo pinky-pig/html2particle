@@ -41,7 +41,7 @@ export default function main(
   // 截图数据，初始的时候存一下，省的后面再获取了
   let screenshotData: Uint8ClampedArray | null = null
   // 粒子动画效果
-  const disParticleTypes: any[] = []
+  const disParticleTypes: { name: IOptions['type']; func: any }[] = []
   // requestAnimationFrame
   let myReq: any
   // 展示的对象
@@ -61,6 +61,21 @@ export default function main(
     },
     animationDuration: 1000,
   }
+
+  /*****************************/
+  /*       粒子动画效果          */
+  /*****************************/
+  function addParticleType(func: any) {
+    disParticleTypes.push(func)
+  }
+  addParticleType({
+    name: 'SinWaveParticle',
+    func: SinWaveParticle,
+  })
+  addParticleType({
+    name: 'ExplodingParticle',
+    func: ExplodingParticle,
+  })
 
   /********************/
   /*      主函数       */
@@ -129,9 +144,14 @@ export default function main(
 
   /** 创建粒子效果 */
   function createParticle(disObj: IDisplayObj, worldX: number, worldY: number, rgbArr: any) {
-    const MyType = disParticleTypes.find(type => type.name === disObj.particleType)
+    const particleEffect = disParticleTypes.find(type => type.name === disObj.particleType)
 
     // 创建粒子
+    if (!particleEffect) {
+      console.error('没有找到该粒子动画类型')
+      return
+    }
+    const MyType = particleEffect.func
     const particle = new MyType()
     particle.rgbArray = rgbArr
     particle.startX = worldX
@@ -168,15 +188,6 @@ export default function main(
       }
     }
   }
-
-  /*****************************/
-  /*       粒子动画效果          */
-  /*****************************/
-  function addParticleType(func: any) {
-    disParticleTypes.push(func)
-  }
-  addParticleType(SinWaveParticle)
-  addParticleType(ExplodingParticle)
 
   /*****************************/
   /*            Go             */

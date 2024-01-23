@@ -11,9 +11,8 @@
 # 🌸 Get Started
 
 <p align="center">
-<img src="https://cdn.jsdelivr.net/gh/pinky-pig/pic-bed/imageshtml2particle.gif" alt="html2particle" height="300">
+<img src="https://cdn.jsdelivr.net/gh/pinky-pig/pic-bed/imageshtml2particleNew.gif" alt="html2particle" height="300">
 </p>
-
 
 演示地址： [Demo](https://html2particle.mmeme.me/)  
 仓库地址： [Github](https://github.com/pinky-pig/html2particle)
