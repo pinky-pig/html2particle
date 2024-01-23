@@ -44,15 +44,18 @@ export default function main(
   const disParticleTypes: { name: IOptions['type']; func: any }[] = []
   // requestAnimationFrame
   let myReq: any
+  // window resize
+  let resizeTimer: any
+
   // 展示的对象
-  const bound = getCoords(el)
+  const initDisBound = getCoords(el)
 
   const disObj: IDisplayObj = {
     el,
-    width: bound.width,
-    height: bound.height,
-    top: bound.top,
-    left: bound.left,
+    width: initDisBound.width,
+    height: initDisBound.height,
+    top: initDisBound.top,
+    left: initDisBound.left,
     particleType: option.type,
     particlesize: option.particlesize ?? 5,
     particleObj: {
@@ -86,6 +89,8 @@ export default function main(
   async function init() {
     await getScreenshot()
     screenshotData = getAllImageData()
+
+    watchWindowResize()
   }
 
   /** 获取截图 */
@@ -131,6 +136,7 @@ export default function main(
       return null
   }
 
+  /** 获取元素的尺寸 */
   function getCoords(el: HTMLElement) {
     const box = el.getBoundingClientRect()
 
@@ -140,6 +146,25 @@ export default function main(
       top: box.top,
       left: box.left,
     }
+  }
+
+  /** 监听窗口设置创建的画布尺寸 */
+  function watchWindowResize() {
+    window.addEventListener('resize', (e) => {
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(() => {
+        if (disObj.canvas) {
+          disObj.canvas.width = window.innerWidth
+          disObj.canvas.height = window.innerHeight
+
+          const resizeDisBound = getCoords(disObj.el)
+          disObj.width = resizeDisBound.width
+          disObj.height = resizeDisBound.height
+          disObj.top = resizeDisBound.top
+          disObj.left = resizeDisBound.left
+        }
+      }, 250)
+    })
   }
 
   /** 创建粒子效果 */

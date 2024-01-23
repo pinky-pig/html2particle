@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "html2particle": "workspace:^",
+    "html2particle": "workspace:^0.0.3",
     "vue": "^3.2.45"
   },
   "devDependencies": {
