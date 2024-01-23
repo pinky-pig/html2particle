@@ -12,8 +12,12 @@
     "preview": "vite preview packages/html2particle",
     "docs": "vitepress dev packages/docs --open",
     "docs:build": "vitepress build packages/docs",
-    "playground:build": "vite build playground",
+    "playground:build": "vite build packages/html2particle &&vite build playground",
+    "playground:preview": "vite preview playground",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.35.2",

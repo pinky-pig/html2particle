@@ -17,5 +17,7 @@ export default defineConfig({
       fileName: format => `html2particle.${format}.js`,
     },
   },
-
+  optimizeDeps: {
+    include: ['html2canvas'],
+  },
 })

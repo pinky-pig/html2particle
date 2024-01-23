@@ -37,9 +37,7 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "html2canvas": "^1.4.1"
-  },
+
   "devDependencies": {
     "typescript": "^4.9.3"
   }
