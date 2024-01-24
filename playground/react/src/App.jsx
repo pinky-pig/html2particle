@@ -1,14 +1,6 @@
-# React
-
-> Demo 代码：<https://github.com/pinky-pig/html2particle/tree/main/playground/react>
-
-主要就是两点，一传入 DOM ， 二调用 `startAnimation`。
-这里有个例子，具体代码可以看 GitHub 上的示例。
-
-```jsx
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
-import html2particle from 'html2particle'
+import html2particle from '../../../packages/html2particle/src/index'
 
 function App() {
   /** 第一张图片 */
@@ -68,68 +60,3 @@ function App() {
 }
 
 export default App
-
-```
-
-
-```css
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-height: 100vh;
-}
-
-.btn{
-  width: 100px;
-  height: 38px;
-  background: #ffffff;
-  margin-bottom: 40px;
-  border-radius: 10px;
-  color: black;
-  mix-blend-mode: difference;
-  font-size: 20px;
-  line-height: 38px;
-  text-align: center;
-  user-select: none;
-  transition: all 0.3s ease-in-out;
-  outline: 2px solid #000;
-  outline-offset: 2px;
-  cursor: pointer;
-}
-.btn:hover{
-  outline: 2px solid #fff;
-  outline-offset: 2px;
-}
-
-.container {
-  align-items: center;
-  user-select: none;
-  display: flex;
-  flex-direction: row;
-  gap:20px;
-  flex-wrap: wrap;
-}
-
-.image {
-  width: 300px;
-  height: 200px;
-  cursor: pointer;
-  margin: 0 auto 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  outline: 2px solid #887cc8;
-  outline-offset: 2px;
-}
-
-```

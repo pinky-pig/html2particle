@@ -1,7 +1,10 @@
 # Vue
 
-传一个DOM ，返回一个 `startAnimation` 方法，调用该方法即可开始动画。
 
+> Demo 代码：<https://github.com/pinky-pig/html2particle/tree/main/playground/vue>
+
+主要就是两点，一传入 DOM ， 二调用 `startAnimation`。
+具体代码可以看 GitHub 上的示例。
 
 ```vue{9,20}
 <script setup lang="ts">

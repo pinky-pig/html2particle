@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 // import html2particle from 'html2particle'
-import html2particle from '../../packages/html2particle/src/index'
+import html2particle from '../../../packages/html2particle/src/index'
 
 const item1Ref = ref<HTMLElement>()
 let handleItem1Click = () => { }

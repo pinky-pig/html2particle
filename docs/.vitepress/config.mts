@@ -22,6 +22,7 @@ export default defineConfig({
       {
         text: 'Usage',
         items: [
+          { text: 'Vanilla', link: '/usage/vanilla' },
           { text: 'Vue', link: '/usage/vue' },
           { text: 'React', link: '/usage/react' },
         ],
@@ -29,7 +30,7 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' },
+      { icon: 'github', link: 'https://github.com/pinky-pig/html2particle' },
     ],
   },
 })
