@@ -19,7 +19,7 @@
 
 ## 🎉 Introduce
 
-html2particle 是一个将 HTML 转为 canvas 粒子动画的一个库。逻辑很简单，代码小几百行，结构很清晰。使用了一个依赖库 [html2canvas](https://www.npmjs.com/package/html2canvas) 。
+html2particle 是一个将 HTML 转为 canvas 粒子动画的一个库。逻辑很简单，代码小几百行，结构很清晰。使用了一个依赖库 [html2canvas](https://www.npmjs.com/package/html2canvas) 。实际代码只有二百多行，7kb左右。不过由于依赖 `html2canvas`，打包后还是有 200多kb大小。
 
 ## 🏄‍♂️ Feature
 

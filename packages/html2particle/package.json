@@ -1,7 +1,7 @@
 {
   "name": "html2particle",
   "type": "module",
-  "version": "0.0.5",
+  "version": "0.0.8",
   "private": false,
   "author": "pinky-pig",
   "license": "MIT",
@@ -37,7 +37,9 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },
-
+  "dependencies": {
+    "html2canvas": "^1.4.1"
+  },
   "devDependencies": {
     "typescript": "^4.9.3"
   }

@@ -22,4 +22,7 @@ cache
 *.njsproj
 *.sln
 *.sw?
-pnpm-lock.yaml
+
+# vitepress
+.vitepress/dist
+.vitepress/cache
