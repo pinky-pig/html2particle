@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>html2particle</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://cdn.jsdelivr.net/npm/html2particle@0.0.8/dist/html2particle.umd.min.js">
+  </script>
+</head>
+
+<body>
+
+  <div id="app">
+    <div id="btn" class="btn"> Show </div>
+    <div class="container">
+
+      <div id="item4Ref" class="emoji">
+        <span>🍑</span>
+      </div>
+
+      <div id="item5Ref" class="emoji">
+        <span>🥰</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const item4Ref = document.getElementById('item4Ref')
+    function initItem4Event() {
+      // eslint-disable-next-line no-undef
+      const { startAnimation } = html2particle.html2particle(item4Ref, { type: 'ExplodingParticle' })
+      item4Ref.onclick = () => {
+        item4Ref.firstElementChild.style.display = 'none'
+        startAnimation()
+      }
+    }
+    initItem4Event()
+
+    /** 第二张图片 */
+    const item5Ref = document.getElementById('item5Ref')
+    function initItem5Event() {
+      // eslint-disable-next-line no-undef
+      const { startAnimation } = html2particle.html2particle(item5Ref, { type: 'SinWaveParticle' })
+      item5Ref.onclick = () => {
+        item5Ref.firstElementChild.style.display = 'none'
+        startAnimation()
+      }
+    }
+    initItem5Event()
+
+    /** 按钮 */
+    const btn = document.getElementById('btn')
+    btn.onclick = () => {
+      item4Ref.firstElementChild.style.display = 'unset'
+      item5Ref.firstElementChild.style.display = 'unset'
+    }
+  </script>
+
+</body>
+
+</html>
