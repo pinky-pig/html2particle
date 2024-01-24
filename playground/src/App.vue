@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import html2particle from '../../packages/html2particle/dist/html2particle.es.js'
-// import html2particle from '../../packages/html2particle/src/index'
+// import html2particle from '../../packages/html2particle/dist/html2particle.es.js'
+import html2particle from '../../packages/html2particle/src/index'
 
 const item1Ref = ref<HTMLElement>()
 let handleItem1Click = () => { }
@@ -74,19 +74,19 @@ onMounted(() => {
     </div>
 
     <div ref="item2Ref" class="emoji" @click="handleItem2Click">
-      <span v-if="isShow2">🍑</span>
+      <span>🍑</span>
     </div>
 
     <div ref="item3Ref" class="emoji" @click="handleItem3Click">
-      <span v-if="isShow3">🥰</span>
+      <span>🥰</span>
     </div>
 
     <div ref="item4Ref" class="image" @click="handleItem4Click">
-      <img v-if="isShow4" src="/1.jpg" alt="">
+      <img src="/1.jpg" alt="">
     </div>
 
     <div ref="item5Ref" class="image" @click="handleItem5Click">
-      <img v-if="isShow5" src="/2.jpg" alt="">
+      <img src="/2.jpg" alt="">
     </div>
   </div>
 </template>
@@ -151,9 +151,10 @@ img {
 }
 
 .emoji {
-  width: 100%;
+  width: 300px;
   height: 180px;
   font-size: 120px;
+  margin: 0 auto;
   cursor: pointer;
 }
 </style>

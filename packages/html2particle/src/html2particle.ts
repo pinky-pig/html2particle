@@ -1,5 +1,6 @@
 import html2canvas from 'html2canvas'
 import { ExplodingParticle, SinWaveParticle } from './effect'
+
 interface IOptions {
   type: 'SinWaveParticle' | 'ExplodingParticle'
   particlesize?: number
@@ -44,18 +45,14 @@ export default function main(
   const disParticleTypes: { name: IOptions['type']; func: any }[] = []
   // requestAnimationFrame
   let myReq: any
-  // window resize
-  let resizeTimer: any
 
   // 展示的对象
-  const initDisBound = getCoords(el)
-
   const disObj: IDisplayObj = {
     el,
-    width: initDisBound.width,
-    height: initDisBound.height,
-    top: initDisBound.top,
-    left: initDisBound.left,
+    width: 0,
+    height: 0,
+    top: 0,
+    left: 0,
     particleType: option.type,
     particlesize: option.particlesize ?? 5,
     particleObj: {
@@ -87,10 +84,11 @@ export default function main(
   init()
 
   async function init() {
-    await getScreenshot()
-    screenshotData = getAllImageData()
+    updateDisObjProperty()
 
-    watchWindowResize()
+    await getScreenshot()
+
+    screenshotData = getAllImageData()
   }
 
   /** 获取截图 */
@@ -101,28 +99,6 @@ export default function main(
         if (typeof disObj.scrnCanvas === 'undefined') {
           disObj.scrnCanvas = canvas
           disObj.scrnCtx = canvas.getContext('2d', { willReadFrequently: true })!
-        }
-
-        // 创建 canvas 容器
-        if (typeof disObj.canvas === 'undefined') {
-          disObj.canvas = document.createElement('canvas')
-
-          disObj.canvas.style.position = 'fixed'
-
-          disObj.canvas.width = document.documentElement.scrollWidth
-          disObj.canvas.height = document.documentElement.scrollHeight
-          disObj.canvas.style.top = `${0}px`
-          disObj.canvas.style.left = `${0}px`
-          disObj.canvas.style.right = `${0}px`
-          disObj.canvas.style.bottom = `${0}px`
-
-          disObj.canvas.style.userSelect = 'none'
-          disObj.canvas.style.pointerEvents = 'none'
-          disObj.canvas.style.zIndex = '1001'
-          disObj.ctx = disObj.canvas.getContext('2d', { willReadFrequently: true })!
-          document.body.appendChild(disObj.canvas)
-
-          // document.body.appendChild(canvas) // 截图添加到 document 上预览
         }
 
         resolve('gengrate DOM canvas')
@@ -138,6 +114,15 @@ export default function main(
       return null
   }
 
+  /** 更新元素的尺寸 */
+  function updateDisObjProperty() {
+    const resizeDisBound = getCoords(disObj.el)
+    disObj.width = resizeDisBound.width
+    disObj.height = resizeDisBound.height
+    disObj.top = resizeDisBound.top
+    disObj.left = resizeDisBound.left
+  }
+
   /** 获取元素的尺寸 */
   function getCoords(el: HTMLElement) {
     const box = el.getBoundingClientRect()
@@ -147,29 +132,6 @@ export default function main(
       height: box.height,
       top: box.top,
       left: box.left,
-    }
-  }
-
-  /** 监听窗口设置创建的画布尺寸 */
-  function watchWindowResize() {
-    window.addEventListener('resize', (e) => {
-      clearTimeout(resizeTimer)
-      resizeTimer = setTimeout(() => {
-        updateCanvasAndDisObjProperty()
-      }, 250)
-    })
-  }
-
-  function updateCanvasAndDisObjProperty() {
-    if (disObj.canvas) {
-      disObj.canvas.width = document.documentElement.scrollWidth
-      disObj.canvas.height = document.documentElement.scrollHeight
-
-      const resizeDisBound = getCoords(disObj.el)
-      disObj.width = resizeDisBound.width
-      disObj.height = resizeDisBound.height
-      disObj.top = resizeDisBound.top
-      disObj.left = resizeDisBound.left
     }
   }
 
@@ -209,10 +171,6 @@ export default function main(
       // 动画结束 这里的 1 是动画的时间。因为预设的两个动画都是 1000ms
       // 判断的依据就是如果时间差超过动画的时间，那么就结束
       if (percent > 1) {
-        disObj.particleObj = {
-          startTime: Date.now(),
-          myParticles: [],
-        }
         if (typeof disObj.ctx !== 'undefined')
           disObj.ctx.clearRect(0, 0, document.documentElement.scrollWidth, document.documentElement.scrollHeight)
         cancelAnimation()
@@ -220,10 +178,7 @@ export default function main(
     }
   }
 
-  /*****************************/
-  /*            Go             */
-  /*****************************/
-
+  /** 给所有的像素点创建粒子类 */
   function createSimultaneousparticle() {
     disObj.particleObj = {
       startTime: Date.now(),
@@ -245,13 +200,48 @@ export default function main(
     }
   }
 
+  /*****************************/
+  /*            Go             */
+  /*****************************/
+
   function startAnimation() {
-    updateCanvasAndDisObjProperty()
+    // 1. 停止之前还有动画在进行中
+    cancelAnimation()
+
+    // 2. 更新展示的元素位置
+    updateDisObjProperty()
+
+    // 3. 创建画布
+    createCanvas()
 
     setTimeout(() => {
+      // 4. 创建动画
       createAnimation()
+
+      // 5. 开始动画
       updateAnimation()
     })
+  }
+
+  function createCanvas() {
+    if (typeof disObj.canvas === 'undefined') {
+      disObj.canvas = document.createElement('canvas')
+
+      disObj.canvas.style.position = 'fixed'
+
+      disObj.canvas.width = document.documentElement.scrollWidth
+      disObj.canvas.height = document.documentElement.scrollHeight
+      disObj.canvas.style.top = `${0}px`
+      disObj.canvas.style.left = `${0}px`
+      disObj.canvas.style.right = `${0}px`
+      disObj.canvas.style.bottom = `${0}px`
+
+      disObj.canvas.style.userSelect = 'none'
+      disObj.canvas.style.pointerEvents = 'none'
+      disObj.canvas.style.zIndex = '1001'
+      disObj.ctx = disObj.canvas.getContext('2d', { willReadFrequently: true })!
+      document.body.appendChild(disObj.canvas)
+    }
   }
 
   function createAnimation() {
@@ -266,8 +256,18 @@ export default function main(
   }
 
   function cancelAnimation() {
+    disObj.particleObj = {
+      startTime: Date.now(),
+      myParticles: [],
+    }
+
     cancelAnimationFrame(myReq)
     isAnimating = false
+
+    if (disObj.canvas) {
+      document.body.removeChild(disObj.canvas)
+      disObj.canvas = undefined
+    }
   }
 
   return {
