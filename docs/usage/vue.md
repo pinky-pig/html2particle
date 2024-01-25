@@ -1,6 +1,6 @@
 # Vue
 
-
+> stackblitz 预览：<https://stackblitz.com/edit/vitejs-vite-cjksfh?file=src%2FApp.vue>  
 > Demo 代码：<https://github.com/pinky-pig/html2particle/tree/main/playground/vue>
 
 主要就是两点，一传入 DOM ， 二调用 `startAnimation`。
