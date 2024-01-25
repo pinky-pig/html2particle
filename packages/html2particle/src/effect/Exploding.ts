@@ -22,7 +22,7 @@ export const ExplodingParticle = function (this: any) {
     if (this.radius > 0) {
       ctx.beginPath()
       ctx.arc(this.startX, this.startY, this.radius, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(${this.rgbArray[0]},${this.rgbArray[1]},${this.rgbArray[2]}, ${this.rgbArray[3]})`
+      ctx.fillStyle = `rgba(${this.rgbaArray[0]},${this.rgbaArray[1]},${this.rgbaArray[2]}, ${this.rgbaArray[3]})`
       ctx.fill()
 
       this.radius -= 0.1

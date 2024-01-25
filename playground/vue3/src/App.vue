@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 // import html2particle from 'html2particle'
 import html2particle from '../../../packages/html2particle/src/index'
+import { CustomParticle } from './customParticle'
 
 const item1Ref = ref<HTMLElement>()
 let handleItem1Click = () => { }
@@ -18,7 +19,11 @@ const item2Ref = ref<HTMLElement>()
 let handleItem2Click = () => { }
 const isShow2 = ref(true)
 function initItem2Event() {
-  const { startAnimation } = html2particle(item2Ref.value!, { type: 'ExplodingParticle' })
+  const { startAnimation } = html2particle(item2Ref.value!, {
+    type: 'CustomParticle',
+    particlesize: 4,
+    customParticle: CustomParticle,
+  })
   handleItem2Click = () => {
     isShow2.value = false
     startAnimation()
@@ -74,7 +79,7 @@ onMounted(() => {
     </div>
 
     <div ref="item2Ref" class="emoji" @click="handleItem2Click">
-      <span>🍑</span>
+      <span v-show="isShow2">🍑</span>
     </div>
 
     <div ref="item3Ref" class="emoji" @click="handleItem3Click">

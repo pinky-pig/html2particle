@@ -1,9 +1,32 @@
 import html2canvas from 'html2canvas'
 import { ExplodingParticle, SinWaveParticle } from './effect'
 
+export interface IParticleInstance {
+  /** 渲染动画的持续时间 */
+  animationDuration: number
+  /** 渲染所需的绘制方法 */
+  draw: (ctx: CanvasRenderingContext2D, percent: number) => void
+  /** 会传给自定义类的值：粒子的 X 值 */
+  startX?: number
+  /** 会传给自定义类的值：粒子的 Y 值 */
+  startY?: number
+  /** 会传给自定义类的值：粒子的 RGBA */
+  rgbaArray?: any
+  /** 会传给自定义类的值：DOM的 Width */
+  disWidth?: number
+  /** 会传给自定义类的值：DOM的 Height */
+  disHeight?: number
+  /** 会传给自定义类的值：DOM的 Left */
+  disLeft?: number
+  /** 会传给自定义类的值：DOM的 TOP */
+  disTop?: number
+  [key: string]: any
+}
+
 interface IOptions {
-  type: 'SinWaveParticle' | 'ExplodingParticle'
+  type: 'SinWaveParticle' | 'ExplodingParticle' | 'CustomParticle'
   particlesize?: number
+  customParticle?: new () => IParticleInstance
 }
 
 interface Html2particleReturn {
@@ -17,7 +40,7 @@ interface IDisplayObj {
   height: number
   top: number
   left: number
-  particleType: 'SinWaveParticle' | 'ExplodingParticle'
+  particleType: IOptions['type']
   particlesize: number
   particleObj: {
     startTime: number
@@ -79,6 +102,14 @@ export function html2particle(
     func: ExplodingParticle,
   })
 
+  const { customParticle } = option
+  if (customParticle) {
+    addParticleType({
+      name: 'CustomParticle',
+      func: customParticle,
+    })
+  }
+
   /********************/
   /*      主函数       */
   /********************/
@@ -138,7 +169,7 @@ export function html2particle(
   }
 
   /** 创建粒子效果 */
-  function createParticle(disObj: IDisplayObj, worldX: number, worldY: number, rgbArr: any) {
+  function createParticle(disObj: IDisplayObj, worldX: number, worldY: number, rgbaArr: any) {
     const particleEffect = disParticleTypes.find(type => type.name === disObj.particleType)
 
     // 创建粒子
@@ -148,12 +179,14 @@ export function html2particle(
     }
     const MyType = particleEffect.func
     const particle = new MyType()
-    particle.rgbArray = rgbArr
+    particle.rgbaArray = rgbaArr
     particle.startX = worldX
     particle.startY = worldY
     particle.index = disObj.particleObj.myParticles.length
     particle.disWidth = disObj.width
     particle.disHeight = disObj.height
+    particle.disTop = disObj.top
+    particle.disLeft = disObj.left
 
     // 粒子运动 duration 时间
     disObj.animationDuration = particle.animationDuration
