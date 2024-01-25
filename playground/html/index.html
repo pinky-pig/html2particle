@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>html2particle</title>
   <link rel="stylesheet" href="./style.css">
-  <script src="https://cdn.jsdelivr.net/npm/html2particle@0.0.8/dist/html2particle.umd.min.js">
+  <script src="https://cdn.jsdelivr.net/npm/html2particle@0.0.9/dist/html2particle.umd.min.js">
   </script>
 </head>
 
@@ -28,10 +28,85 @@
   </div>
 
   <script>
+    class CustomParticle {
+      constructor() {
+        this.name = 'ExplodingParticle'
+        this.animationDuration = 1000
+        this.speed = {
+          x: Math.random() * 20 - 10, // [-20, 20]
+          y: Math.random() * 20 - 10,
+          ax: 0,
+          ay: 0.98,
+        }
+        this.radius = 10
+        this.startX = 0
+        this.startY = Math.random() * 40 - 20
+        this.rgbaArray = [0, 0, 0, 0]
+        this.disWidth = 0
+        this.disHeight = 0
+        this.disLeft = 0
+        this.disTop = 0
+
+        this.heightScaler = Math.round(65 * (genNormalizedVal() + 1) / 2) + 10
+        this.yPosFunc = t => t
+      }
+
+      draw(ctx, percent) {
+        if (this.radius > 0) {
+          if (this.rgbaArray[3] !== 0)
+            this.drawEmojiHeart(ctx, this.startX, this.startY, '🍑', this.radius)
+
+          this.startX += this.speed.x / 10
+          this.startY = this.startY + this.yPosFunc(percent) * this.heightScaler / 10 + this.speed.y / 10
+        }
+      }
+
+      /**
+           * 绘制 Emoji
+           * @param ctx 图层
+           * @param centerX 位置 X
+           * @param centerY 位置 Y
+           * @param emoji emoji
+           * @param size 大小
+           */
+      drawEmojiHeart(ctx, centerX, centerY, emoji, size) {
+        ctx.font = `${size}px serif`
+        ctx.fillText(emoji, centerX - size / 2, centerY + size / 4)
+      }
+
+      /**
+           * 绘制五角星
+           * @param ctx 图层
+           * @param centerX 位置 X
+           * @param centerY 位置 Y
+           * @param radius 大小
+           * @param rgbaArray 颜色
+           */
+      drawFivePointedStar(ctx, centerX, centerY, radius, rgbaArray) {
+        ctx.beginPath()
+        const points = 5
+        for (let i = 0; i < points * 2; i++) {
+          const angle = (i * Math.PI) / points - Math.PI / 2
+          const distance = i % 2 === 0 ? radius : (radius * 2) / 3 // 判断奇偶，奇数为外角点，偶数为内角点
+          const x = centerX + Math.cos(angle) * distance
+          const y = centerY + Math.sin(angle) * distance
+          ctx.lineTo(x, y)
+        }
+
+        ctx.closePath()
+        ctx.fillStyle = `rgba(${rgbaArray[0]},${rgbaArray[1]},${rgbaArray[2]}, ${rgbaArray[3]})`
+        ctx.fill()
+      }
+    }
+
     const item4Ref = document.getElementById('item4Ref')
     function initItem4Event() {
       // eslint-disable-next-line no-undef
-      const { startAnimation } = html2particle.html2particle(item4Ref, { type: 'ExplodingParticle' })
+      const { startAnimation } = html2particle.html2particle(item4Ref, {
+        type: 'CustomParticle',
+        particlesize: 4,
+        customParticle: CustomParticle,
+      })
       item4Ref.onclick = () => {
         item4Ref.firstElementChild.style.display = 'none'
         startAnimation()
@@ -56,6 +131,10 @@
     btn.onclick = () => {
       item4Ref.firstElementChild.style.display = 'unset'
       item5Ref.firstElementChild.style.display = 'unset'
+    }
+
+    function genNormalizedVal() {
+      return ((Math.random() + Math.random() + Math.random() + Math.random() + Math.random() + Math.random() - 3)) / 3
     }
   </script>
 

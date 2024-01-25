@@ -12,7 +12,7 @@
     "docs:preview": "vitepress preview"
   },
   "dependencies": {
-    "html2particle": "^0.0.8"
+    "html2particle": "^0.0.9"
   },
   "devDependencies": {
     "vitepress": "1.0.0-rc.40"

@@ -22,7 +22,7 @@ features:
     details: DOM 转为粒子四周爆炸后自由落地运动
   - title: 🎈 气泡粒子
     details: 水平方向正弦波动，竖直方向匀速向上运动至消失
-  - title: ✨ Todo - 自定义
+  - title: ✨ 自定义粒子
     details: 支持自定义动画
 ---
 
