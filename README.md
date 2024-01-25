@@ -94,7 +94,6 @@ img{
 | 变量 | 类型 | 作用|
 | :---: | :--: |:--: |
 | startAnimation |  boolean | 开始运动 |
-| isAnimating | () => void | 是否正在运动 |
 
  
 
