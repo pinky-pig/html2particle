@@ -22,9 +22,10 @@ export default defineConfig({
       {
         text: 'Usage',
         items: [
-          { text: 'Vanilla', link: '/usage/vanilla' },
+          { text: 'Html', link: '/usage/html' },
           { text: 'Vue', link: '/usage/vue' },
           { text: 'React', link: '/usage/react' },
+          { text: 'Vanilla', link: '/usage/vanilla' },
         ],
       },
     ],
