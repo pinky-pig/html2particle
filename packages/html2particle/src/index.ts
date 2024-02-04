@@ -1,32 +1,38 @@
 import html2canvas from 'html2canvas'
-import { ExplodingParticle, SinWaveParticle } from './effect'
+import { ExplodingParticle, PoofParticle, SinWaveParticle } from './effect'
 
-export interface IParticleInstance {
+export interface IParticle {
+  /** 当前粒子的序号 */
+  index: number
+  /** 粒子的初始大小 */
+  disParticleGap: number
+  /** 会传给自定义类的值：粒子的 X 值 */
+  startX: number
+  /** 会传给自定义类的值：粒子的 Y 值 */
+  startY: number
+  /** 会传给自定义类的值：粒子的 RGBA */
+  rgbaArray: Uint8ClampedArray
+  /** 会传给自定义类的值：DOM的 Width */
+  disWidth: number
+  /** 会传给自定义类的值：DOM的 Height */
+  disHeight: number
+  /** 会传给自定义类的值：DOM的 Left */
+  disLeft: number
+  /** 会传给自定义类的值：DOM的 TOP */
+  disTop: number
+}
+export interface IParticleInstance extends IParticle {
   /** 渲染动画的持续时间 */
   animationDuration: number
   /** 渲染所需的绘制方法 */
   draw: (ctx: CanvasRenderingContext2D, percent: number) => void
-  /** 会传给自定义类的值：粒子的 X 值 */
-  startX?: number
-  /** 会传给自定义类的值：粒子的 Y 值 */
-  startY?: number
-  /** 会传给自定义类的值：粒子的 RGBA */
-  rgbaArray?: any
-  /** 会传给自定义类的值：DOM的 Width */
-  disWidth?: number
-  /** 会传给自定义类的值：DOM的 Height */
-  disHeight?: number
-  /** 会传给自定义类的值：DOM的 Left */
-  disLeft?: number
-  /** 会传给自定义类的值：DOM的 TOP */
-  disTop?: number
   [key: string]: any
 }
 
 interface IOptions {
-  type: 'SinWaveParticle' | 'ExplodingParticle' | 'CustomParticle'
-  particlesize?: number
-  customParticle?: new () => IParticleInstance
+  type: 'SinWaveParticle' | 'ExplodingParticle' | 'PoofParticle' | 'CustomParticle'
+  particleGap?: number
+  customParticle?: new (...args: any[]) => IParticleInstance
 }
 
 interface Html2particleReturn {
@@ -41,7 +47,7 @@ interface IDisplayObj {
   top: number
   left: number
   particleType: IOptions['type']
-  particlesize: number
+  particleGap: number
   particleObj: {
     startTime: number
     myParticles: any[]
@@ -59,7 +65,7 @@ export function html2particle(
   el: HTMLElement,
   option: IOptions = {
     type: 'SinWaveParticle',
-    particlesize: 5,
+    particleGap: 5,
   },
 ): Html2particleReturn {
   // 是否进行动画。两个作用，一是导出出去，二是结束最后一个 requestAnimationFrame
@@ -79,7 +85,7 @@ export function html2particle(
     top: 0,
     left: 0,
     particleType: option.type,
-    particlesize: option.particlesize ?? 5,
+    particleGap: option.particleGap ?? 5,
     particleObj: {
       startTime: Date.now(),
       myParticles: [],
@@ -100,6 +106,10 @@ export function html2particle(
   addParticleType({
     name: 'ExplodingParticle',
     func: ExplodingParticle,
+  })
+  addParticleType({
+    name: 'PoofParticle',
+    func: PoofParticle,
   })
 
   const { customParticle } = option
@@ -169,7 +179,7 @@ export function html2particle(
   }
 
   /** 创建粒子效果 */
-  function createParticle(disObj: IDisplayObj, worldX: number, worldY: number, rgbaArr: any) {
+  function createParticle(disObj: IDisplayObj, worldX: number, worldY: number, rgbaArr: Uint8ClampedArray) {
     const particleEffect = disParticleTypes.find(type => type.name === disObj.particleType)
 
     // 创建粒子
@@ -178,15 +188,18 @@ export function html2particle(
       return
     }
     const MyType = particleEffect.func
-    const particle = new MyType()
-    particle.rgbaArray = rgbaArr
-    particle.startX = worldX
-    particle.startY = worldY
-    particle.index = disObj.particleObj.myParticles.length
-    particle.disWidth = disObj.width
-    particle.disHeight = disObj.height
-    particle.disTop = disObj.top
-    particle.disLeft = disObj.left
+
+    const particle = new MyType({
+      rgbaArray: rgbaArr,
+      startX: worldX,
+      startY: worldY,
+      index: disObj.particleObj.myParticles.length,
+      disWidth: disObj.width,
+      disHeight: disObj.height,
+      disTop: disObj.top,
+      disLeft: disObj.left,
+      disParticleGap: disObj.particleGap,
+    })
 
     // 粒子运动 duration 时间
     disObj.animationDuration = particle.animationDuration
@@ -222,13 +235,13 @@ export function html2particle(
 
     // 处理粒子像素
     if (screenshotData) {
-      for (let y = 0; y < disObj.height; y += disObj.particlesize) {
-        for (let x = 0; x < disObj.width; x += disObj.particlesize) {
+      for (let y = 0; y < disObj.height; y += disObj.particleGap) {
+        for (let x = 0; x < disObj.width; x += disObj.particleGap) {
           const index = (y * disObj.width + x) * 4
-          const colorData = screenshotData.slice(index, index + disObj.particlesize)
+          const colorData = screenshotData.slice(index, index + disObj.particleGap)
 
-          const startX = x + Math.random() * 10 - disObj.particlesize
-          const startY = y + Math.random() * 10 - disObj.particlesize
+          const startX = x + Math.random() * 10 - disObj.particleGap
+          const startY = y + Math.random() * 10 - disObj.particleGap
           createParticle(disObj, disObj.left + startX, disObj.top + startY, colorData)
         }
       }

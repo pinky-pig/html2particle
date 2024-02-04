@@ -14,27 +14,33 @@ export class CustomParticle implements IParticleInstance {
   disWidth: number
   disHeight: number
   disLeft: number
+  index: number
   disTop: number
+  disParticleGap: number
   yPosFunc: (t: any) => any
   heightScaler: number
 
-  constructor() {
+  constructor({ rgbaArray, startX, startY, index, disWidth, disHeight, disTop, disLeft, disParticleGap }: IParticleInstance) {
     this.name = 'ExplodingParticle'
     this.animationDuration = 1000
+
+    this.radius = 10
+    this.startX = startX
+    this.startY = startY
+    this.rgbaArray = rgbaArray
+    this.disWidth = disWidth
+    this.disHeight = disHeight
+    this.disLeft = disTop
+    this.disTop = disLeft
+    this.index = index
+    this.disParticleGap = disParticleGap
+
     this.speed = {
       x: Math.random() * 20 - 10, // [-20, 20]
       y: Math.random() * 20 - 10,
       ax: 0,
       ay: 0.98,
     }
-    this.radius = 10
-    this.startX = 0
-    this.startY = Math.random() * 40 - 20
-    this.rgbaArray = [0, 0, 0, 0]
-    this.disWidth = 0
-    this.disHeight = 0
-    this.disLeft = 0
-    this.disTop = 0
 
     this.heightScaler = Math.round(65 * (genNormalizedVal() + 1) / 2) + 10
     this.yPosFunc = (t: any) => t

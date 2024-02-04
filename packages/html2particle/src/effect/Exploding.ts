@@ -1,24 +1,48 @@
-export const ExplodingParticle = function (this: any) {
-  this.name = 'ExplodingParticle'
-  this.animationDuration = 1000 // in ms
+import type { IParticleInstance } from '../index'
 
-  /********************************************************/
-  /*                 x方向匀速运动                          */
-  /*                 y方向匀加速运动                        */
-  /********************************************************/
+export class ExplodingParticle implements IParticleInstance {
+  name: string
+  animationDuration: number
+  speed: { x: number; y: number; ax: number; ay: number }
+  radius: number
+  startX: number
+  startY: number
+  rgbaArray: any
+  disWidth: number
+  disHeight: number
+  disLeft: number
+  disTop: number
+  index: number
+  disParticleGap: number
 
-  this.speed = {
-    x: Math.random() * 30 - 15, // [-20, 20]
-    y: Math.random() * 40 - 20,
-    ax: 0,
-    ay: 0.98,
+  constructor(
+    { rgbaArray, startX, startY, index, disWidth, disHeight, disTop, disLeft, disParticleGap }: IParticleInstance,
+  ) {
+    this.name = 'ExplodingParticle'
+    this.animationDuration = 1000
+    this.radius = 100
+
+    this.rgbaArray = rgbaArray
+    this.startX = startX
+    this.startY = startY
+    this.index = index
+    this.disWidth = disWidth
+    this.disHeight = disHeight
+    this.disTop = disTop
+    this.disLeft = disLeft
+    this.disParticleGap = disParticleGap
+
+    this.speed = {
+      x: Math.random() * 30 - 15, // [-20, 20]
+      y: Math.random() * 40 - 20,
+      ax: 0,
+      ay: 0.98,
+    }
+
+    this.radius = 5 + Math.random() * 5
   }
 
-  this.radius = 5 + Math.random() * 5
-
-  this.draw = (ctx: CanvasRenderingContext2D, percent: number) => {
-    // 这里是每帧刷一次，所以里面的操作根据 percent 比较好，不然太快了（省事直接 speed / 10 算了）
-
+  draw(ctx: CanvasRenderingContext2D, percent: number): void {
     if (this.radius > 0) {
       ctx.beginPath()
       ctx.arc(this.startX, this.startY, this.radius, 0, Math.PI * 2)

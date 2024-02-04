@@ -8,10 +8,37 @@ const item1Ref = ref<HTMLElement>()
 let handleItem1Click = () => { }
 const isShow1 = ref(true)
 function initItem1Event() {
-  const { startAnimation } = html2particle(item1Ref.value!, { type: 'SinWaveParticle' })
-  handleItem1Click = () => {
+  const { startAnimation } = html2particle(item1Ref.value!, { type: 'PoofParticle', particleGap: 40 })
+  handleItem1Click = async () => {
     isShow1.value = false
-    startAnimation()
+
+    if (item1Ref.value) {
+      const animation = item1Ref.value.animate(
+        [
+          { transform: 'scale(1)' },
+          { opacity: 0, transform: 'scale(0.3)' },
+        ],
+        {
+          duration: 500,
+          easing: 'linear',
+          fill: 'forwards',
+        },
+      )
+
+      // Promise.all([animation].map(animation => animation.finished)).then(
+      //   () => {
+      //     startAnimation()
+      //   },
+      // )
+
+      setTimeout(() => {
+        startAnimation()
+      }, getRandomInt(0, 100))
+
+      function getRandomInt(min: number, max: number) {
+        return Math.floor(Math.random() * (max - min) + min)
+      }
+    }
   }
 }
 
@@ -21,7 +48,7 @@ const isShow2 = ref(true)
 function initItem2Event() {
   const { startAnimation } = html2particle(item2Ref.value!, {
     type: 'CustomParticle',
-    particlesize: 4,
+    particleGap: 4,
     customParticle: CustomParticle,
   })
   handleItem2Click = () => {
@@ -75,7 +102,7 @@ onMounted(() => {
 <template>
   <div class="container">
     <div ref="item1Ref" class="text" @click="handleItem1Click">
-      Hello world!
+      <span>Hello world!</span>
     </div>
 
     <div ref="item2Ref" class="emoji" @click="handleItem2Click">
