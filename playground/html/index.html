@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>html2particle</title>
   <link rel="stylesheet" href="./style.css">
-  <script src="https://cdn.jsdelivr.net/npm/html2particle@0.0.9/dist/html2particle.umd.min.js">
+  <script src="https://cdn.jsdelivr.net/npm/html2particle@0.0.10/dist/html2particle.umd.min.js">
   </script>
 </head>
 
@@ -24,28 +24,38 @@
         <span>🥰</span>
       </div>
 
+      <div id="item6Ref" class="emoji">
+        <svg style="width: 100%; height: 100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M7 21q-.825 0-1.412-.587T5 19V6q-.425 0-.712-.288T4 5q0-.425.288-.712T5 4h4q0-.425.288-.712T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5q0 .425-.288.713T19 6v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zm-7 11q.425 0 .713-.288T11 16V9q0-.425-.288-.712T10 8q-.425 0-.712.288T9 9v7q0 .425.288.713T10 17m4 0q.425 0 .713-.288T15 16V9q0-.425-.288-.712T14 8q-.425 0-.712.288T13 9v7q0 .425.288.713T14 17M7 6v13z"/></svg>
+      </div>
+
     </div>
   </div>
 
   <script>
     class CustomParticle {
-      constructor() {
+      constructor(
+        { rgbaArray, startX, startY, index, disWidth, disHeight, disTop, disLeft, disParticleGap },
+      ) {
         this.name = 'ExplodingParticle'
         this.animationDuration = 1000
+
+        this.radius = 10
+        this.startX = startX
+        this.startY = startY
+        this.rgbaArray = rgbaArray
+        this.disWidth = disWidth
+        this.disHeight = disHeight
+        this.disLeft = disTop
+        this.disTop = disLeft
+        this.index = index
+        this.disParticleGap = disParticleGap
+
         this.speed = {
-          x: Math.random() * 20 - 10, // [-20, 20]
+          x: Math.random() * 20 - 10,
           y: Math.random() * 20 - 10,
           ax: 0,
           ay: 0.98,
         }
-        this.radius = 10
-        this.startX = 0
-        this.startY = Math.random() * 40 - 20
-        this.rgbaArray = [0, 0, 0, 0]
-        this.disWidth = 0
-        this.disHeight = 0
-        this.disLeft = 0
-        this.disTop = 0
 
         this.heightScaler = Math.round(65 * (genNormalizedVal() + 1) / 2) + 10
         this.yPosFunc = t => t
@@ -62,26 +72,26 @@
       }
 
       /**
-           * 绘制 Emoji
-           * @param ctx 图层
-           * @param centerX 位置 X
-           * @param centerY 位置 Y
-           * @param emoji emoji
-           * @param size 大小
-           */
+       * 绘制 Emoji
+       * @param ctx 图层
+       * @param centerX 位置 X
+       * @param centerY 位置 Y
+       * @param emoji emoji
+       * @param size 大小
+       */
       drawEmojiHeart(ctx, centerX, centerY, emoji, size) {
         ctx.font = `${size}px serif`
         ctx.fillText(emoji, centerX - size / 2, centerY + size / 4)
       }
 
       /**
-           * 绘制五角星
-           * @param ctx 图层
-           * @param centerX 位置 X
-           * @param centerY 位置 Y
-           * @param radius 大小
-           * @param rgbaArray 颜色
-           */
+       * 绘制五角星
+       * @param ctx 图层
+       * @param centerX 位置 X
+       * @param centerY 位置 Y
+       * @param radius 大小
+       * @param rgbaArray 颜色
+       */
       drawFivePointedStar(ctx, centerX, centerY, radius, rgbaArray) {
         ctx.beginPath()
         const points = 5
@@ -104,7 +114,7 @@
       // eslint-disable-next-line no-undef
       const { startAnimation } = html2particle.html2particle(item4Ref, {
         type: 'CustomParticle',
-        particlesize: 4,
+        particleGap: 4,
         customParticle: CustomParticle,
       })
       item4Ref.onclick = () => {
@@ -126,11 +136,44 @@
     }
     initItem5Event()
 
+    /** 第三张图片 */
+    const item6Ref = document.getElementById('item6Ref')
+    function initItem6Event() {
+      // eslint-disable-next-line no-undef
+      const { startAnimation } = html2particle.html2particle(item6Ref, { type: 'PoofParticle', particleGap: 10 })
+      item6Ref.onclick = () => {
+        // item6Ref.firstElementChild.style.display = 'none'
+
+        const animation = item6Ref.animate(
+          [
+            { transform: 'scale(1)' },
+            { opacity: 0, transform: 'scale(0.3)' },
+          ],
+          {
+            duration: 180,
+            easing: 'linear',
+            fill: 'forwards',
+          },
+        )
+
+        setTimeout(() => {
+          startAnimation()
+        }, getRandomInt(0, 100))
+
+        function getRandomInt(min, max) {
+          return Math.floor(Math.random() * (max - min) + min)
+        }
+      }
+    }
+    initItem6Event()
+
     /** 按钮 */
     const btn = document.getElementById('btn')
     btn.onclick = () => {
       item4Ref.firstElementChild.style.display = 'unset'
       item5Ref.firstElementChild.style.display = 'unset'
+      const animation = item6Ref.getAnimations()[0]
+      animation.cancel()
     }
 
     function genNormalizedVal() {
