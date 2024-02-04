@@ -2,7 +2,8 @@
 import { onMounted, ref } from 'vue'
 // import html2particle from 'html2particle'
 import html2particle from '../../../packages/html2particle/src/index'
-import { CustomParticle } from './customParticle'
+// import { CustomParticle } from './customParticle'
+import { PoofEffect } from './PoofEffect'
 
 const item1Ref = ref<HTMLElement>()
 let handleItem1Click = () => { }
@@ -48,8 +49,9 @@ const isShow2 = ref(true)
 function initItem2Event() {
   const { startAnimation } = html2particle(item2Ref.value!, {
     type: 'CustomParticle',
-    particleGap: 4,
-    customParticle: CustomParticle,
+    particleGap: 40,
+    customParticle: PoofEffect,
+    // customParticle: CustomParticle,
   })
   handleItem2Click = () => {
     isShow2.value = false
