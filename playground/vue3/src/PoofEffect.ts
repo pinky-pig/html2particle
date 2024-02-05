@@ -22,10 +22,6 @@ export class PoofEffect implements IParticleInstance {
   disTop: number
   index: number
   disParticleGap: number
-  center: {
-    x: number // [-20, 20]
-    y: number
-  }
 
   image: HTMLImageElement
 
@@ -45,11 +41,6 @@ export class PoofEffect implements IParticleInstance {
     this.disTop = disTop
     this.disLeft = disLeft
     this.disParticleGap = disParticleGap
-
-    this.center = {
-      x: this.disLeft + this.disWidth / 2 + genNormalizedVal(), // [-20, 20]
-      y: this.disTop + this.disHeight / 2 + genNormalizedVal(),
-    }
 
     this.image = new Image()
     this.image.src = cloud // 替换为你的图片路径
