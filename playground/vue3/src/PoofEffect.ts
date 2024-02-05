@@ -67,8 +67,8 @@ export class PoofEffect implements IParticleInstance {
     const spriteHeight = this.image.height / spriteCount
 
     // 要绘制的位置
-    const drawX = this.disLeft
-    const drawY = this.disTop
+    const drawX = this.disLeft + this.disWidth / 2 - spriteWidth / 2
+    const drawY = this.disTop + this.disHeight / 2 - spriteHeight / 2
     const drawWidth = spriteWidth
     const drawHeight = spriteHeight
 
@@ -78,6 +78,7 @@ export class PoofEffect implements IParticleInstance {
       (value, index, array) => percent > index / array.length && percent <= (index + 1) / array.length,
     )
     spriteY = frame[currentFrameIndex !== -1 ? currentFrameIndex : 0]
+    const currentFrame = frame[currentFrameIndex !== -1 ? currentFrameIndex : 0]
 
     // 在画布上绘制当前帧
     ctx.drawImage(
