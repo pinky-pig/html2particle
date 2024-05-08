@@ -5,11 +5,11 @@
     <BentoIcon class="w-12 h-12 inline-block mb-4" />
 
     <h1 class="text-4xl font-bold mb-2">
-      starter-vue-lib
+      html2particle
     </h1>
 
     <p>
-      <em class="text-sm opacity-75">A simple bento layout component for Vue3.</em>
+      <em class="text-sm opacity-75">Based on html2canvas</em>
     </p>
 
     <div class="flex flex-row justify-center items-center gap-2 mt-5">
@@ -26,7 +26,7 @@
       </a>
     </div>
 
-    <a href="/api/props" class="underline text-sm opacity-75 text-[14px] my-4 cursor-pointer ">
+    <a href="/guide/get-started" class="underline text-sm opacity-75 text-[14px] my-4 cursor-pointer ">
       Documentation
     </a>
 

@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   html2particle:
-    specifier: ^0.0.9
-    version: 0.0.9
+    specifier: 0.0.11-beta.4
+    version: 0.0.11-beta.4(html2canvas@1.4.1)
 
 devDependencies:
   vitepress:
@@ -895,8 +895,10 @@ packages:
       text-segmentation: 1.0.3
     dev: false
 
-  /html2particle@0.0.9:
-    resolution: {integrity: sha512-wjlWA66ST4nl+ZiB0+1jNj5HYdr688AK93adFu/79nW5NAM6GI2vyhH8k2OtjIXvSNG+6iPKJgerVWqIw778Cg==}
+  /html2particle@0.0.11-beta.4(html2canvas@1.4.1):
+    resolution: {integrity: sha512-q6UpvFykmssihhNyTs0l9ZkSn6JJmCuKE4Xt4gXgLWifwRl5wOpP8OJEUqtIV5rDl+O1GsqAdjHiTZaK+WRQiA==}
+    peerDependencies:
+      html2canvas: ^1.4.1
     dependencies:
       html2canvas: 1.4.1
     dev: false

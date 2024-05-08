@@ -1,107 +1,92 @@
-# starter-vue-lib
+<div align="center">
+	<h1 style="margin:10px">html2particle</h1>
+	<h6 align="center">
+    Made by Arvin
+  </h6>
+</div>
 
-- vite vue vueuse vue-router
-- shadcn-vue
-- tailwindcss
-- vitepress
-- vite-lib npm package
+# 🌸 Get Started
 
-## 开发
+<p align="center">
+<img src="https://cdn.jsdelivr.net/gh/pinky-pig/pic-bed/imageshtml2particleNew.gif" alt="html2particle" height="300">
+</p>
 
-开发 lib 是在 `package/` 目录下，运行项目测试是在 `src/` 目录下，Vitepress 文档在 `docs/` 目录下。
+演示地址： [Demo](https://html2particle.mmeme.me/)
+仓库地址： [Github](https://github.com/pinky-pig/html2particle)
 
-`docs/` 可以直接使用 `src/components` 中的组件，因为在 `docs/.vitepress/config.mts` 中配置了 `unplugin-vue-components/vite` 和 `unplugin-auto-import/vite` ，不过并没有配置 tsconfig.json 覆盖根目录中的。
+## 🎉 Introduce
 
-### 安装依赖
+html2particle 是一个将 HTML 转为 canvas 粒子动画的一个库。逻辑很简单，代码小几百行，结构很清晰。使用了一个依赖库 [html2canvas](https://www.npmjs.com/package/html2canvas) 。
 
-```bash
-pnpm install -r
-```
+## 🏄‍♂️ Feature
 
-### 启动项目
+- TS 开发 Vite 打包。
+- 返回开始触发动画和是否运动状态。
+- 支持传入粒子运动类型和粒子尺寸，提功了两种粒子效果，支持自定义开发。
 
-```bash
-npm run dev
-```
+## 👊 Todo
 
-### 引用包
+- [ ] 增加粒子效果
+- [ ] 支持自定义粒子动画效果
 
-```js
-import foo from '../../packages/foo'
-```
-
-### 测试本地包
-
-<https://pnpm.io/zh/next/cli/link>
+## 🍄 Usage Steps
 
 ```bash
-# 进入包目录
-cd ~/packages
-# 链接到全局
-pnpm link --global
-# 退到根目录
-cd ..
-# 安装本地包
-pnpm link --global foo
+npm i html2particle
 ```
 
-就会发现 node_modules 中有个 foo 包了。
+```vue
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import html2particle from 'html2particle'
 
-但这个时候引入的时候，会有 ts 提示找不到，所以我们需要配置一些 tsconfig.json
+const containerRef = ref<HTMLElement>()
 
-```json
-{
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "foo": ["node_modules/foo/index.ts"]
-    }
+let handleClick = () => {}
+const isShow = ref(true)
+onMounted(() => {
+  const { startAnimation } = html2particle(containerRef.value!, {
+    type: 'Particle',
+  })
+  handleClick = () => {
+    isShow.value = false
+    startAnimation()
   }
+})
+</script>
+
+<template>
+  <div ref="containerRef" class="container" @click="handleClick">
+    <img v-show="isShow" src="/default.webp" alt="">
+  </div>
+</template>
+
+<style scoped>
+.container {
+  width: 888px;
+  height: 592px;
+  cursor: pointer;
 }
+img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+</style>
 ```
 
-## 打包 lib
+## ⚡ Configurations
 
-### 构建
+### 🍳 变量
 
-```bash
-npm run build:lib
-```
+|        变量        |               类型                |     作用     |
+| :----------------: | :-------------------------------: | :----------: |
+|         el         |            HTMLElement            |   绑定 DOM   |
+|    option.type     | 'Particle' \| 'ExplodingParticle' | 粒子动画类型 |
+| option.particleize |              number               |   粒子尺寸   |
 
-### 发包
+### 🍟 返回
 
-```bash
-npm run release:lib
-```
-
-## 打包 docs
-
-### 构建
-
-```bash
-npm run docs:dev
-```
-
-### 打包
-
-```bash
-npm run docs:build
-```
-
-### 预览
-
-```bash
-npm run docs:preview
-```
-
-### 打包后的文件
-
-`/docs/.vitepress/dist`
-
-# 使用
-
-使用此仓库后，如果需要合本仓库的最新代码，添加远程仓库后，拉取代码。
-
-```bash
-git pull --tags starter-vue-lib main --allow-unrelated-histories
-```
+|      变量      |  类型   |   作用   |
+| :------------: | :-----: | :------: |
+| startAnimation | boolean | 开始运动 |

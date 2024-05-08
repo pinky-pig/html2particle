@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toast } from 'vue-sonner'
 
-const code = `pnpm install`
+const code = `npm i html2particle`
 const showCheckIcon = ref(false)
 
 async function handleCopyCode() {
