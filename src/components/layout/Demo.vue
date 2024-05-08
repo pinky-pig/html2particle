@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import html2particle from '../../../packages'
+// import html2particle from '../../../output-lib/html2particle.es.js'
 
 const item3Ref = ref<HTMLElement>()
 let handleItem3Click = () => { }

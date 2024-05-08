@@ -12,21 +12,30 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'API', link: '/api/props' },
+      { text: 'Guide', link: '/guide/get-started' },
     ],
 
     sidebar: [
       {
-        text: 'API',
+        text: 'Guide',
         items: [
-          { text: 'Props', link: '/api/props' },
-          { text: 'Emits', link: '/api/emits' },
+          { text: 'Get Started', link: '/guide/get-started' },
+          { text: 'Demo', link: '/guide/demo' },
+        ],
+      },
+      {
+        text: 'Usage',
+        items: [
+          { text: 'Html', link: '/usage/html' },
+          { text: 'Vue', link: '/usage/vue' },
+          { text: 'React', link: '/usage/react' },
+          { text: 'Vanilla', link: '/usage/vanilla' },
         ],
       },
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' },
+      { icon: 'github', link: 'https://github.com/pinky-pig/html2particle' },
     ],
   },
   vite: {

@@ -1,7 +1,7 @@
 {
   "name": "pkg_name",
   "type": "module",
-  "version": "0.0.2-alpha.6.19",
+  "version": "0.0.10",
   "private": false,
   "author": "arvin",
   "license": "MIT",
@@ -11,13 +11,7 @@
     "url": "pkg_repository_url"
   },
   "keywords": [
-    "pkg_name",
-    "vue3-bento",
-    "vue-grid-layout",
-    "vue3-drag-bento-component",
-    "drag",
-    "bento",
-    "grid"
+    "pkg_name"
   ],
   "exports": {
     ".": {
@@ -39,7 +33,7 @@
     "dev": "vite"
   },
   "devDependencies": {
-    "typescript": "^4.9.3",
-    "vue": "^3.2.45"
+    "html2canvas": "^1.4.1",
+    "typescript": "^4.9.3"
   }
 }

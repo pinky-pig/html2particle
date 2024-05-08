@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => {
         sourcemap: false,
         rollupOptions: {
           external: [
-            'vue',
+            'html2canvas',
           ],
           output: [
             {
