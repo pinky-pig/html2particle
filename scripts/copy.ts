@@ -4,8 +4,6 @@ import { loadEnv } from 'vite'
 
 const ENV = { ...loadEnv('development', process.cwd()) }
 
-console.log(ENV.VITE_PKG_NAME, 'var')
-
 const sourcePath1 = path.resolve(__dirname, '../packages/package.json') // 修改为实际的第一个源文件路径
 const destinationPath1 = path.resolve(__dirname, '../output-lib/package.json') // 修改为实际的第一个目标文件路径
 

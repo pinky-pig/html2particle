@@ -97,3 +97,11 @@ npm run docs:preview
 ### 打包后的文件
 
 `/docs/.vitepress/dist`
+
+# 使用
+
+使用此仓库后，如果需要合本仓库的最新代码，添加远程仓库后，拉取代码。
+
+```bash
+git pull --tags starter-vue-lib main --allow-unrelated-histories
+```
