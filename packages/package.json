@@ -1,33 +1,30 @@
 {
-  "name": "v3-bento",
+  "name": "html2particle",
   "type": "module",
-  "version": "0.0.2-alpha.6.19",
+  "version": "0.0.10",
   "private": false,
-  "author": "arvin",
+  "author": "pinky-pig",
   "license": "MIT",
-  "homepage": "http://v3bento.mmeme.me/",
+  "homepage": "https://html2particle.mmeme.me/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pinky-pig/v3-bento"
+    "url": "https://github.com/pinky-pig/html2particle"
   },
   "keywords": [
-    "v3-bento",
-    "vue3-bento",
-    "vue-grid-layout",
-    "vue3-drag-bento-component",
-    "drag",
-    "bento",
-    "grid"
+    "html2particle",
+    "html2canvas",
+    "html",
+    "particle"
   ],
   "exports": {
     ".": {
-      "import": "./v3-bento.es.js",
-      "require": "./v3-bento.umd.cjs"
+      "import": "./html2particle.es.js",
+      "require": "./html2particle.umd.js"
     }
   },
-  "main": "./v3-bento.es.js",
-  "module": "./v3-bento.es.js",
-  "types": "./playground.d.ts",
+  "main": "./html2particle.umd.js",
+  "module": "./html2particle.es.js",
+  "types": "./index.d.ts",
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
@@ -36,10 +33,14 @@
     "*"
   ],
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1"
   },
   "devDependencies": {
-    "typescript": "^4.9.3",
-    "vue": "^3.2.45"
+    "typescript": "^4.9.3"
   }
 }

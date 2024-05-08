@@ -8,7 +8,8 @@
     "moduleResolution": "bundler",
     "paths": {
       "~/*": ["src/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "html2particle": ["node_modules/html2particle/index.ts"]
     },
     "resolveJsonModule": true,
     "types": [

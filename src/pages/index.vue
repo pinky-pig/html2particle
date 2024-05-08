@@ -24,6 +24,7 @@
       "
     >
       <Installation />
+      <Demo />
     </div>
 
     <TheFooter />

@@ -2,7 +2,7 @@
 
 import { resolve } from 'node:path'
 import type { PluginOption } from 'vite'
-import { defineConfig, mergeConfig } from 'vite'
+import { defineConfig, loadEnv, mergeConfig } from 'vite'
 
 import CleanCSS from 'clean-css'
 import baseConfig from './vite.base.config'
@@ -15,13 +15,15 @@ function minify(code: string) {
 let cssCodeStr = ''
 
 export default defineConfig(({ mode }) => {
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
+
   if (mode === 'lib') {
     return mergeConfig(baseConfig, {
       build: {
         lib: {
           entry: resolve(__dirname, 'packages/index.ts'),
-          name: 'V3Bento',
-          fileName: 'v3-bento',
+          name: process.env.VITE_PKG_NAME,
+          fileName: process.env.VITE_PKG_NAME,
         },
         outDir: 'output-lib',
         emptyOutDir: true,
@@ -34,12 +36,12 @@ export default defineConfig(({ mode }) => {
           output: [
             {
               format: 'umd',
-              name: 'v3-bento.umd.js',
-              entryFileNames: `v3-bento.umd.js`,
+              name: `${process.env.VITE_PKG_NAME}.umd.js`,
+              entryFileNames: `${process.env.VITE_PKG_NAME}.umd.js`,
             },
             {
               format: 'es',
-              entryFileNames: `v3-bento.es.js`,
+              entryFileNames: `${process.env.VITE_PKG_NAME}.es.js`,
               preserveModules: false,
             },
           ],

@@ -1,49 +1,57 @@
-import type { Component, Raw } from 'vue'
-
-/**
- * JS 操作的数组类型
- */
-export interface BentoItemType {
-  id: string
-  x: number
-  y: number
-  width: number
-  height: number
+export interface IParticle {
+  /** 当前粒子的序号 */
   index: number
-  components?: Raw<Component<any>>
+  /** 粒子的初始大小 */
+  disParticleGap: number
+  /** 会传给自定义类的值：粒子的 X 值 */
+  startX: number
+  /** 会传给自定义类的值：粒子的 Y 值 */
+  startY: number
+  /** 会传给自定义类的值：粒子的 RGBA */
+  rgbaArray: Uint8ClampedArray
+  /** 会传给自定义类的值：DOM的 Width */
+  disWidth: number
+  /** 会传给自定义类的值：DOM的 Height */
+  disHeight: number
+  /** 会传给自定义类的值：DOM的 Left */
+  disLeft: number
+  /** 会传给自定义类的值：DOM的 TOP */
+  disTop: number
+}
+export interface IParticleInstance extends IParticle {
+  /** 渲染动画的持续时间 */
+  animationDuration: number
+  /** 渲染所需的绘制方法 */
+  draw: (ctx: CanvasRenderingContext2D, percent: number) => void
   [key: string]: any
 }
 
-/**
- * 渲染的 BentoItem 组件类型
- */
-export type BentoItemProps = Pick<BentoItemType, 'id' | 'x' | 'y' | 'width' | 'height' | 'index'>
-
-/**
- * 渲染的 BentoItem 组件类型
- */
-export interface BentoProps {
-  // 是否显示关闭按钮
-  bentoCells: BentoItemType[]
-  // 格子的大小
-  size?: number
-  // 每一行最大格子数量
-  maximumCells?: number
-  // 格子的间距
-  gap?: number
-  // 是否禁用拖拽
-  disabled?: boolean
-  // 格子类名
-  commonClass?: string
-  // 格子随拖拽速度倾斜的角度级别
-  rotateType?: 'light' | 'medium' | 'heavy' | 'none'
+export interface IOptions {
+  type: 'SinWaveParticle' | 'ExplodingParticle' | 'PoofParticle' | 'CustomParticle'
+  particleGap?: number
+  customParticle?: new (...args: any[]) => IParticleInstance
 }
 
-/**
- *  BentoItem 倾斜
- */
-export interface BentoItemRotateParameter {
-  maxVelocity: number
-  maxRotation: number
-  rotationFactor: number
+export interface Html2particleReturn {
+  isAnimating: boolean
+  startAnimation: () => void
+}
+
+export interface IDisplayObj {
+  el: HTMLElement
+  width: number
+  height: number
+  top: number
+  left: number
+  particleType: IOptions['type']
+  particleGap: number
+  particleObj: {
+    startTime: number
+    myParticles: any[]
+  }
+  animationDuration: number
+  canvas?: HTMLCanvasElement
+  ctx?: CanvasRenderingContext2D
+  scrnCanvas?: HTMLCanvasElement
+  scrnCtx?: CanvasRenderingContext2D
 }
