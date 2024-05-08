@@ -15,13 +15,49 @@
 ### 安装依赖
 
 ```bash
-pnpm install
+pnpm install -r
 ```
 
 ### 启动项目
 
 ```bash
 npm run dev
+```
+
+### 引用包
+
+```js
+import foo from '../../packages/foo'
+```
+
+### 测试本地包
+
+<https://pnpm.io/zh/next/cli/link>
+
+```bash
+# 进入包目录
+cd ~/packages
+# 链接到全局
+pnpm link --global
+# 退到根目录
+cd ..
+# 安装本地包
+pnpm link --global foo
+```
+
+就会发现 node_modules 中有个 foo 包了。
+
+但这个时候引入的时候，会有 ts 提示找不到，所以我们需要配置一些 tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "foo": ["node_modules/foo/index.ts"]
+    }
+  }
+}
 ```
 
 ## 打包 lib
