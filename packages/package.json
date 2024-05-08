@@ -1,7 +1,7 @@
 {
   "name": "pkg_name",
   "type": "module",
-  "version": "0.0.11-beta.3",
+  "version": "0.0.11-beta.4",
   "private": false,
   "author": "arvin",
   "license": "MIT",
@@ -31,6 +31,9 @@
   ],
   "scripts": {
     "dev": "vite"
+  },
+  "peerDependencies": {
+    "html2canvas": "^1.4.1"
   },
   "devDependencies": {
     "html2canvas": "^1.4.1",
