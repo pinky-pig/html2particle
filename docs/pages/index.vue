@@ -19,7 +19,7 @@
         <span v-show="isDark">Dark</span>
       </Button>
 
-      <a rel="noreferrer" href="https://github.com/pinky-pig/v3-bento" target="_blank">
+      <a rel="noreferrer" href="https://github.com/pinky-pig/html2particle" target="_blank">
         <Button variant="secondary" class="h-[38px] w-[148px] text-[13px]">
           GitHub
         </Button>

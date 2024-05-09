@@ -7,7 +7,7 @@
     <a
       class="i-carbon-logo-github text-2xl"
       rel="noreferrer"
-      href="https://github.com/pinky-pig/v3-bento"
+      href="https://github.com/pinky-pig/html2particle"
       target="_blank"
       title="GitHub"
     />
